@@ -1,0 +1,9 @@
+
+<h1>fu</h1>
+<angular-slickgrid
+  gridId="myGrid"
+  [columnDefinitions]="columnDefinitions"
+  [gridOptions]="gridOptions"
+  [dataset]="dataset"
+  (onAngularGridCreated)="gridReady($any($event).detail)"
+></angular-slickgrid>
