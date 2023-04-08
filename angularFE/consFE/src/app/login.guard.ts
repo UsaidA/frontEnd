@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import {Registration, singletonAuth} from "../classes"
+import { AuthService } from './shared/auth.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuardGuard implements CanActivate {
-  auth;
-  constructor(){
-    this.auth = singletonAuth.getInstance("");
+export class LoginGuardGuard  {
+  constructor(private authService: AuthService, private router: Router){
     
   }
    
@@ -18,8 +17,12 @@ export class LoginGuardGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-    return this.auth.isLoggedIn();
+
+    if (!this.authService.isLoggedIn) {
+      this.router.navigate(['login']);
+      return false;
+    }
+    return this.authService.isLoggedIn;
   }
 
 

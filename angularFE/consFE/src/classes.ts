@@ -1,11 +1,11 @@
-import { jwtToken } from "./services/itemsKeys";
+import { jwtTokenKey } from "./services/itemsKeys";
 class Registration{
     constructor(public email: string, public password: string){
         this.email = email;
         this.password =password;
     }
 
-
+    /*
     login(registered: Registration, token: string){
         const temp = JSON.stringify(registered)
 
@@ -22,7 +22,10 @@ class Registration{
             return true;
         }
 
+
     }
+
+    */
 }
 
 class Worker{
@@ -47,43 +50,40 @@ class Manager{
     }
 }
 
-class singletonAuth{
+class singletonAuth {
+  private static _instance: singletonAuth | null = null;
 
- static _instance: singletonAuth | null = null;
+  private constructor() {
+    //localStorage.setItem(jwtToken, token);
+  }
 
- constructor(token:string){
-    
-    localStorage.setItem(jwtToken, token);
-}
-
-static getInstance(token:string){
-
-    if(!singletonAuth._instance){
-
-        singletonAuth._instance = new singletonAuth(token);
+  public setToken(token: string) {
+    localStorage.setItem(jwtTokenKey, token);
+  }
+  public static getInstance():singletonAuth {
+    if (!singletonAuth._instance) {
+      console.log(' woof woof');
+      singletonAuth._instance = new singletonAuth();
     }
     return singletonAuth._instance;
+  }
 
-}
-
- isLoggedIn():boolean{
-
-    
-    if(localStorage.getItem(jwtToken) === null){
-        console.log("what the fuck", localStorage.getItem(jwtToken))
-        return false
-      }else{
-        return true;
-      }
-
-}
-static logOut(){
-    this._instance= null; 
+  public isLoggedIn(): boolean {
+    const token = localStorage.getItem(jwtTokenKey);
+    console.log(token, 'auth auth ');
+    // Check if the token is truthy (i.e., not null, undefined, or false)
+    if (token) {
+      // Token exists in LocalStorage, so return true
+      return true;
+    } else {
+      // Token does not exist in LocalStorage, so return false
+      return false;
+    }
+  }
+  static logOut() {
+    this._instance = null;
     localStorage.clear();
-   
-}
-
-
+  }
 }
 
 class Job{

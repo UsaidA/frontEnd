@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Registration, singletonAuth} from "../classes"
 import { loginAPI, getAllWorkersAPI, getAllJobsAPI, updateJobCompletionAPI } from "./APIs";
-import { allJobsKey, allWorkerKey } from "./itemsKeys";
+import { allJobsKey, allWorkerKey, registeredKey } from "./itemsKeys";
 import { Job } from "../classes";
 
 // 
@@ -13,12 +13,14 @@ export function sendLoginRequest(email: any, password: any){
     console.log(JSONOBJ)
     axios.post(loginAPI, JSONOBJ, {headers:{'Content-Type':'application/json'}})
     .then((response) => {
-      if (response.data =="failed password" || response.data == "Email doesn't exist"){
+      if (response.data =="failed password" || response.data == "Email doesn't exist"){ // change to credentials fail
       }else{
+        console.log("big testeth")
         console.log(response.data.accessToken, " access token");
-        const auth = singletonAuth.getInstance(response.data.accessToken);
+        const auth = singletonAuth.getInstance();
+        auth.setToken(response.data.accessToken);
         const stringfyUser = JSON.stringify(registration);
-        localStorage.setItem('registered',stringfyUser)
+        localStorage.setItem(registeredKey,stringfyUser)
 
         if(response.data.accessControl === 1){
           console.log(response.data.accessControl, " in manager ")
