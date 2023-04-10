@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Create Job</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+  </div>
+  <div class="form-outline form-white mb-4 form-group">
+    <label class="form-label" for="typeEmailX">Job Name</label>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #jobName/>
+    <label class="form-label" for="typeEmailX">Job Description</label>
+    <input type="email" id="description" class="form-control form-control-lg"  #jobDescription/>
+    <label class="form-label" for="typeEmailX">Job Address</label>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #jobAddress/>
+    
+</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+      Close
+    </button>
+    <button type="submit" class="btn btn-primary" (click)="saveJob(jobName,jobDescription,jobAddress)">Create Job</button>
+  </div>

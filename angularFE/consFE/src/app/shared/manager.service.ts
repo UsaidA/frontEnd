@@ -10,6 +10,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Job } from 'src/classes';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,22 @@ export class ManagerService {
       catchError(this.handleError)
     );
   }
+
+  postJob(
+    name: string,
+    description: string,
+    completed: string,
+    address: string
+  ) {
+    console.log({ name, description, completed, address })
+
+    const Observable = this.http.post<any>(
+      `${this.endpoint}/jobs/createNewJob`,
+      { name, description, completed, address }
+    );
+    return Observable;
+  }
+  
 
   handleError(error: HttpErrorResponse) {
     let msg = '';

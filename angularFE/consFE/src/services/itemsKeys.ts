@@ -4,6 +4,7 @@ export const allWorkerKey = APP_PREFIX + "allWorkers";
 export const allJobsKey = APP_PREFIX + "allJobs";
 export const jwtTokenKey = APP_PREFIX + "jwtToken";
 export const registeredKey = APP_PREFIX + "registered"; 
+export const accessControlKey = APP_PREFIX + "AC"
 
 
 import { Injectable } from '@angular/core';

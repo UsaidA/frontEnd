@@ -11,6 +11,9 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/authconfig.interceptor';
+import { ModalComponent } from './modal/modal.component';
+import { MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,9 @@ import { AuthInterceptor } from './shared/authconfig.interceptor';
     TopBarComponent,
     LoginComponent,
     ManagerWorkboardComponent,
+    ModalComponent,
+    WorkerWorkboardComponent,
+    
     
    
   ],
@@ -34,8 +40,10 @@ import { AuthInterceptor } from './shared/authconfig.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    }
+      multi: true,
+      
+    },
+    MdbModalService
   ],
   bootstrap: [AppComponent]
 })

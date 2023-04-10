@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 import { Job, Worker } from '../../classes';
 import { DataTablesModule } from 'angular-datatables';
-import { singletonAuth } from '../../classes';
 import { Router } from '@angular/router';
 import { allJobsKey, allWorkerKey, jwtTokenKey } from 'src/services/itemsKeys';
 import { sendJobData } from 'src/services/services';
 import { ManagerService } from '../shared/manager.service';
 import { AuthService } from '../shared/auth.service';
+import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { ModalComponent } from '../modal/modal.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -15,6 +17,8 @@ import { AuthService } from '../shared/auth.service';
   styleUrls: ['./manager-workboard.component.scss'],
 })
 export class ManagerWorkboardComponent implements OnInit {
+  dtTrigger: Subject<any> = new Subject();
+  modalRef: MdbModalRef<ModalComponent> | null = null;
   firstName = '';
   lastName = '';
   email = '';
@@ -26,7 +30,13 @@ export class ManagerWorkboardComponent implements OnInit {
   public workerData: Worker[] = [];
 
   dtOptions: DataTables.Settings = {};
-  constructor(private router: Router, private managerService: ManagerService, private authService: AuthService) {}
+  dtElement: any;
+  constructor(
+    private router: Router,
+    private managerService: ManagerService,
+    private authService: AuthService,
+    private modalService: MdbModalService
+  ) {}
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
@@ -42,42 +52,31 @@ export class ManagerWorkboardComponent implements OnInit {
     };
   }
 
-  getJobData(){
-    this.managerService.getJobs().subscribe((jobs:any)=>{ //use method when promise resolved
-      this.jData = jobs ?? []; 
-    })
-  }
-  getWorkerData(){
-    this.managerService.getWorkers().subscribe((workers:any)=>{ //use method when promise resolved
-      
-      this.workerData= workers ?? []; // if workers is null or undefined,  assign []
-    })
+  getJobData() {
+    this.managerService.getJobs().subscribe((jobs: any) => {
+      //use method when promise resolved
+      this.jData = jobs ?? [];
+      //this.rerender();
+    });
   }
 
- /* getJobData() {
-    if (localStorage.getItem(allJobsKey) === null) {
-      console.log('local storage has no teacher data');
-    } else {
-      let jobsFromStorage: Job[] = JSON.parse(
-        localStorage.getItem(allJobsKey) || '{}'
-      );
-      console.log(jobsFromStorage);
-      this.jData = jobsFromStorage;
-    }
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next(void 0);
+    });
   }
 
   getWorkerData() {
-    if (localStorage.getItem(allWorkerKey) === null) {
-      console.log('local storage has no worker data');
-    } else {
-      let workersFromStorage: Worker[] = JSON.parse(
-        localStorage.getItem(allWorkerKey) || '{}'
-      );
-      console.log(workersFromStorage);
-      this.workerData = workersFromStorage;
-    }
+    this.managerService.getWorkers().subscribe((workers: any) => {
+      //use method when promise resolved
+
+      this.workerData = workers ?? []; // if workers is null or undefined,  assign []
+    });
   }
-*/
+
   checkVal(
     jobID: any,
     name: any,
@@ -105,6 +104,22 @@ export class ManagerWorkboardComponent implements OnInit {
     }
     console.log(jwtTokenKey);
   }
+  openModal() {
+    this.modalRef = this.modalService.open(ModalComponent, {
+      data: { title: 'Job Details' },
+    });
+
+    this.modalRef.onClose.subscribe((message: any) => {
+      var x: Job = JSON.parse(message);
+
+      this.managerService
+        .postJob(x.name, x.description, x.completed, x.address)
+        .subscribe((res: any) => {
+          this.getJobData();
+        });
+       
+    });
+  }
 
   getDistance() {
     console.log('fusodkhfaosdfia');
@@ -126,12 +141,10 @@ export class ManagerWorkboardComponent implements OnInit {
   }
 
   LogOut() {
-    //const auth = singletonAuth.getInstance("");
     this.authService.doLogout();
   }
-  
+
   ngOndestroy() {
     console.log('Manager dashbaord destroyed');
   }
-
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { rootUrl } from 'src/services/APIs';
-import { jwtTokenKey } from 'src/services/itemsKeys';
+import { accessControlKey, jwtTokenKey } from 'src/services/itemsKeys';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
@@ -27,6 +27,7 @@ export class AuthService {
     Observable.subscribe((res: any) => { // subscribe is the fullfillment of the promise
         if (res?.accessToken) {
           localStorage.setItem(jwtTokenKey, res.accessToken);
+          localStorage.setItem(accessControlKey, res.accessControl)
         }
       });
       return Observable;
@@ -36,7 +37,13 @@ export class AuthService {
   }
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem(jwtTokenKey);
-    return authToken !== null ? true : false;
+    let accessControl = localStorage.getItem(accessControlKey);
+    if (authToken !== null && accessControl === "1"){
+      return true;
+    }else{
+      return false
+    }
+    //return authToken !== null ? true : false;
   }
   doLogout() {
     let removeToken = localStorage.removeItem(jwtTokenKey);
