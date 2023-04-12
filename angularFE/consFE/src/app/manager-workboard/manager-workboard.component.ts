@@ -22,8 +22,7 @@ export class ManagerWorkboardComponent implements OnInit {
   firstName = '';
   lastName = '';
   email = '';
-  academicAdvisor = '';
-  courseName = '';
+
   temp = '';
 
   public jData: Job[] = [];
@@ -110,14 +109,18 @@ export class ManagerWorkboardComponent implements OnInit {
     });
 
     this.modalRef.onClose.subscribe((message: any) => {
-      var x: Job = JSON.parse(message);
+      if (message) {
+        console.log(message);
+        var x: Job = JSON.parse(message);
 
-      this.managerService
-        .postJob(x.name, x.description, x.completed, x.address)
-        .subscribe((res: any) => {
-          this.getJobData();
-        });
-       
+        this.managerService
+          .postJob(x.name, x.description, x.completed, x.address)
+          .subscribe((res: any) => {
+            this.getJobData();
+          });
+      }else{
+        console.log("nyet")
+      }
     });
   }
 

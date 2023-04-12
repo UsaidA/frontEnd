@@ -43,7 +43,15 @@ export class AuthService {
     }else{
       return false
     }
-    //return authToken !== null ? true : false;
+  }
+  get isWorkerLoggedIn(): boolean {
+    let authToken = localStorage.getItem(jwtTokenKey);
+    
+    if (authToken !== null ){
+      return true;
+    }else{
+      return false
+    }
   }
   doLogout() {
     let removeToken = localStorage.removeItem(jwtTokenKey);

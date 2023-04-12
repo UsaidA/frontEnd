@@ -14,6 +14,7 @@ import { AuthInterceptor } from './shared/authconfig.interceptor';
 import { ModalComponent } from './modal/modal.component';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
+import { WorkerModalComponent } from './worker-modal/worker-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.co
     ManagerWorkboardComponent,
     ModalComponent,
     WorkerWorkboardComponent,
+    WorkerModalComponent,
     
     
    
