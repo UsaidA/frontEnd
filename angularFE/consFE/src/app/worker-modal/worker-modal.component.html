@@ -1,38 +1,48 @@
+<style>
+  div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+  }
+
+  div.gallery:hover {
+    border: 1px solid #777;
+  }
+
+  div.gallery img {
+    width: 100%;
+    height: auto;
+  }
+
+  div.desc {
+    padding: 15px;
+    text-align: center;
+  }
+</style>
+
 <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Images</h5>
-    <button
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modalRef.close()"
-    ></button>
-  </div>
-  <div>
-    
-    <div class="row">
-      <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-        <ng-container *ngFor = "let image of imageList">
-          <img
-          [src]= "image"
-          class="w-100 shadow-1-strong rounded mb-4"
-          alt="Boat on Calm Water"
-        />
-        </ng-container>
-       
-
-      </div>
-   
+  <h5 class="modal-title" id="exampleModalLabel">Images</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+<div>
+  <ng-container *ngFor="let image of imageList">
+    <div class="gallery">
+      <a target="_blank" [href]="image">
+        <img [src]="image" width="600" height="400" />
+      </a>
     </div>
-    
-  </div>
-<form  enctype="multipart/form-data">
-    <input type="file" (change)="onFileSelected($event)">
-   
-  </form>
+  </ng-container>
+</div>
 
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
-      Close
-    </button>
-    <button type="submit" class="btn btn-primary" >Save</button>
-  </div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Close
+  </button>
+  <button type="submit" class="btn btn-primary">Save</button>
+</div>

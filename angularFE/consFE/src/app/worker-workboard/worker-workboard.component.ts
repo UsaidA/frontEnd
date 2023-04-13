@@ -77,7 +77,8 @@ export class WorkerWorkboardComponent {
       map((keys: any) => {
         let keysList = new Array<string>(keys.length);
         for (let i = 0; i < keys.length; i++) {
-          keysList[i] = 'http://localhost:8888/api/images/' + keys[i].image_key;
+          keysList[i] =
+            'http://localhost:8888/api/images/images/' + keys[i].image_key;
         }
         console.log(keysList);
         return keysList;
@@ -90,6 +91,7 @@ export class WorkerWorkboardComponent {
     this.authService.doLogout();
   }
   openModal(jobData: Job) {
+
     this.getImageKeysFromJob(jobData.jobID).subscribe((keyList: string[]) => {
       console.log(keyList);
       const modalOptions = {
@@ -106,19 +108,19 @@ export class WorkerWorkboardComponent {
         modalOptions
       );
     });
-
-    // console.log(jobData.jobID)
-    // let keyList = this.getImageKeysFromJob(jobData.jobID)
-
-    // console.log(keyList)
-    // const modalOptions = {
-    //   modalClass:'modal-dialog-scrollable',
-    //   data:{
-    //     Job: jobData,
-    //     imageList: keyList
-
-    //   }
-    // }
+  }
+  onFileSelected(event: any, job : Job) {
+    const file: File = event.target.files[0];
+    this.uploadFile(file, job);
+  }
+  
+  uploadFile(file: File, job: Job) {
+    
+    this.workerService.uploadFile(file,job).subscribe((res: any) => {
+      console.log(res);
+      
+    });
+   
   }
   checkVal(
     jobID: any,

@@ -52,6 +52,16 @@ export class WorkerService {
     let api = `${this.endpoint}/images/allKeysFromJob`;
     let params = {jobID: jobIDP}
     return this.http.get(api,{params} ).pipe(
+      
+    );
+  }
+
+  uploadFile(file: File, job: Job) {
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('job',JSON.stringify(job))
+    return this.http.post(rootUrl + '/images/postImage', formData).pipe(
       map((res: any) => {
         return res || null;
       }),

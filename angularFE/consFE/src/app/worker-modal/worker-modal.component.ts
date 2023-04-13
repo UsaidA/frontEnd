@@ -21,24 +21,24 @@ export class WorkerModalComponent {
   }
   
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    this.uploadFile(file);
-  }
+  // onFileSelected(event: any) {
+  //   const file: File = event.target.files[0];
+  //   this.uploadFile(file);
+  // }
   
-  uploadFile(file: File) {
+  // uploadFile(file: File) {
     
-    const formData = new FormData();
-    formData.append('image', file);
-    formData.append('job',JSON.stringify(this.Job))
-    this.http.post(rootUrl + '/images/postImage', formData).subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    );
-  }
+  //   const formData = new FormData();
+  //   formData.append('image', file);
+  //   formData.append('job',JSON.stringify(this.Job))
+  //   this.http.post(rootUrl + '/images/postImage', formData).subscribe(
+  //     (response: any) => {
+  //       console.log(response);
+  //     },
+  //     (error: any) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
 }

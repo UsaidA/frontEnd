@@ -75,6 +75,7 @@
                                 <th>Job Complete</th>
                                 
                                 <th>image Edit</th>
+                                <th>Upload Image</th>
                             </tr>
                             
                         </thead>
@@ -84,6 +85,10 @@
                                 <td> {{job.description}}</td>
                                 <td> <input type = "checkbox" [(ngModel)]='job.completed' (change)="checkVal(job.jobID, job.name, job.description, job.completed? 'true':'false', job.address)"> </td>
                                 <td><button class="btn btn-primary" (click)="openModal(job)">Open modal</button></td>
+                                <td><form enctype="multipart/form-data">
+                                    <input type="file" (change)="onFileSelected($event, job)" />
+                                  </form>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -10,6 +10,7 @@ import { AuthService } from '../shared/auth.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalComponent } from '../modal/modal.component';
 import { Subject } from 'rxjs';
+import { AssignWorkersModalComponent } from '../assign-workers-modal/assign-workers-modal.component';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -118,10 +119,26 @@ export class ManagerWorkboardComponent implements OnInit {
           .subscribe((res: any) => {
             this.getJobData();
           });
-      }else{
-        console.log("nyet")
+      } else {
+        console.log('nyet');
       }
     });
+  }
+  openAssignModal(jobData: Job) {
+    console.log(jobData);
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+        Job: jobData,
+        Workers: this.workerData
+      },
+    };
+
+    
+    this.modalRef = this.modalService.open(
+      AssignWorkersModalComponent,
+      modalOptions
+    );
   }
 
   getDistance() {

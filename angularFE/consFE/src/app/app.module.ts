@@ -15,6 +15,7 @@ import { ModalComponent } from './modal/modal.component';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
 import { WorkerModalComponent } from './worker-modal/worker-modal.component';
+import { AssignWorkersModalComponent } from './assign-workers-modal/assign-workers-modal.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { WorkerModalComponent } from './worker-modal/worker-modal.component';
     ModalComponent,
     WorkerWorkboardComponent,
     WorkerModalComponent,
+    AssignWorkersModalComponent,
     
     
    
