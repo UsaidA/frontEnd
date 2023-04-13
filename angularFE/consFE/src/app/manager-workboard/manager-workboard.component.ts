@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
-import { Job, Worker } from '../../classes';
+import { Job, Jwmapping, Worker } from '../../classes';
 import { DataTablesModule } from 'angular-datatables';
 import { Router } from '@angular/router';
 import { allJobsKey, allWorkerKey, jwtTokenKey } from 'src/services/itemsKeys';
@@ -9,7 +9,7 @@ import { ManagerService } from '../shared/manager.service';
 import { AuthService } from '../shared/auth.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalComponent } from '../modal/modal.component';
-import { Subject } from 'rxjs';
+import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { AssignWorkersModalComponent } from '../assign-workers-modal/assign-workers-modal.component';
 
 @Component({
@@ -125,19 +125,64 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
   openAssignModal(jobData: Job) {
-    console.log(jobData);
-    const modalOptions = {
-      modalClass: 'modal-dialog modal-xl',
-      data: {
-        Job: jobData,
-        Workers: this.workerData
-      },
-    };
+    // the job parameter is passed upon modals creation in the datatable, the 'job' is passed in that moment
+    this.getWorkerDataFromJob(jobData.jobID).subscribe((workerIdList: string[]) => {
+      console.log(jobData);
+      let temp:any = [...this.workerData];
+      for(let i =0; i < temp.length; i++){ // new temp obj array, which extends workers but has an assigned property to tell the created modal which workers are already assinged to that job
+        temp[i].assigned = 0;
+        
+        for(let x = 0; x < workerIdList.length; x++){
+          if(temp[i].workerID  == workerIdList[x]){
+            temp[i].assigned = 1;
+          }
+        }
+      }
 
-    
-    this.modalRef = this.modalService.open(
-      AssignWorkersModalComponent,
-      modalOptions
+      
+      const modalOptions = {
+        modalClass: 'modal-dialog modal-xl',
+        data: {
+          Job: jobData,
+          AllWorkers: temp
+        },
+      };
+
+      this.modalRef = this.modalService.open(
+        AssignWorkersModalComponent,
+        modalOptions
+      );
+
+
+      this.modalRef.onClose.subscribe((message: any) => {
+        if (message) {
+          console.log(message);
+          var x: Jwmapping = JSON.parse(message);
+  
+          this.managerService
+            .postJwmapping(x.workerID, x.jobID)
+            
+        } else {
+          console.log('nyet');
+        }
+      });
+
+
+    });
+  }
+
+  getWorkerDataFromJob(jobID: string): Observable<any> {
+    return this.managerService.getWorkersFromJob(jobID).pipe(
+      map((workers: any) => {
+        console.log(workers)
+        let workersIdList = new Array<string>(workers.length);
+        for (let i = 0; i < workers.length; i++) {
+          workersIdList[i] = workers[i].workerID;
+        }
+        console.log(workersIdList);
+        return workersIdList;
+      }),
+      catchError((val) => of(`I caught: ${val}`))
     );
   }
 

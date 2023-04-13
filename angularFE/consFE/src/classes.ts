@@ -7,7 +7,6 @@ class Registration{
 }
 
 class Worker{
-
     constructor(public workerID: string, public firstName: string, public lastName:string, public email: string, public address: string ){
         this.workerID = workerID;
         this.firstName = firstName;
@@ -39,6 +38,14 @@ class Job{
     }
 
 }
+
+class Jwmapping{
+    constructor(public jwmappingID:string, public workerID: string, public jobID: string ){
+        this.jwmappingID = jwmappingID;
+        this.workerID = workerID;
+        this.jobID = jobID
+    }
+}
 class Travels{
     constructor(public travelID:string , public workerID: string, public startPoint: string, public endPoint:string, public distanceTravelled: string){
         this.travelID = travelID;
@@ -50,4 +57,4 @@ class Travels{
 
 }
 
-export{Registration,Worker, Job,Travels , Manager};
+export{Registration,Worker, Job,Travels , Manager, Jwmapping};

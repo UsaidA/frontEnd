@@ -54,6 +54,43 @@ export class ManagerService {
     );
     return Observable;
   }
+
+  postJwmapping(
+    workerID:string, 
+    jobID: string
+  ) {
+    console.log({workerID, jobID })
+
+    const Observable = this.http.post<any>(
+      `${this.endpoint}/jobs/createNewJob`,
+      { workerID, jobID }
+    );
+    return Observable;
+  }
+
+
+  getJobAssigns(){
+    let api = `${this.endpoint}/jwmapping/getAllJwmapping`;
+    return this.http.get(api).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getWorkersFromJob(jobID: any){
+    let api = `${this.endpoint}/jwmapping/getAllWorkersFromJob`;
+    let params = {jobID: jobID}
+    return this.http.get(api,{params}).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+
   
 
   handleError(error: HttpErrorResponse) {

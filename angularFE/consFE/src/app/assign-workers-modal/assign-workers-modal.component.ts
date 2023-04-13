@@ -9,8 +9,13 @@ import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 })
 export class AssignWorkersModalComponent {
   dtOptions: DataTables.Settings = {};
-  Workers: Worker[] = [];
+  AllWorkers: any[] = [];
+  AssignedWorkers: any;
   Job: any;
   
   constructor(public modalRef: MdbModalRef<AssignWorkersModalComponent>) {}
+
+
+
+
 }
