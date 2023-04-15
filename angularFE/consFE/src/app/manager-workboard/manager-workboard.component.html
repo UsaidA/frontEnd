@@ -73,8 +73,6 @@
                             <tr>
                                 <th>Job Name</th>
                                 <th>Job Description</th>
-                                <th>Job Complete</th>
-                                <th>Edit</th> 
                                 <th>Assign Workers</th>
                             </tr>
                             
@@ -83,8 +81,6 @@
                             <tr *ngFor = "let job of jData">
                                 <td> {{job.name}}</td>
                                 <td> {{job.description}}</td>
-                                <td> <input type = "checkbox" [(ngModel)]='job.completed' (change)="checkVal(job.jobID, job.name, job.description, job.completed? 'true':'false', job.address)"> </td>
-                                <td><button class="btn btn-primary" (click)="openModal()">Open modal</button></td>
                                 <td> <button class="btn btn-primary" (click)="openAssignModal(job)">Assign Workers </button></td>
                             </tr>
                         </tbody>

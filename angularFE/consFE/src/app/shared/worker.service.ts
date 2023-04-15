@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { rootUrl } from 'src/services/APIs';
+import { consCompanyHouseKey, rootUrl } from 'src/services/APIs';
 import { allJobsKey, jwtTokenKey } from 'src/services/itemsKeys';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -55,6 +55,8 @@ export class WorkerService {
       
     );
   }
+
+ 
 
   uploadFile(file: File, job: Job) {
     

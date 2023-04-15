@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { rootUrl } from 'src/services/APIs';
+import { consCompanyHouseKey, googleMatrixApiKey, rootUrl } from 'src/services/APIs';
 import { allJobsKey, jwtTokenKey } from 'src/services/itemsKeys';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import {
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Job } from 'src/classes';
+import axios from 'axios';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,7 @@ export class ManagerService {
     completed: string,
     address: string
   ) {
-    console.log({ name, description, completed, address })
+    console.log({ name, description, completed, address });
 
     const Observable = this.http.post<any>(
       `${this.endpoint}/jobs/createNewJob`,
@@ -55,21 +56,57 @@ export class ManagerService {
     return Observable;
   }
 
-  postJwmapping(
-    workerID:string, 
-    jobID: string
-  ) {
-    console.log({workerID, jobID })
+  postJwmapping(workerID: string, jobID: string) {
+    console.log({ workerID, jobID });
 
     const Observable = this.http.post<any>(
-      `${this.endpoint}/jobs/createNewJob`,
+      `${this.endpoint}/jwmapping/postAssign`,
       { workerID, jobID }
     );
     return Observable;
   }
 
+  deleteJwmapping(workerID: string, jobID: string) {
+    console.log({ workerID, jobID });
+    let params = {
+      jobID: jobID,
+      workerID: workerID,
+    };
+    const Observable = this.http.delete<any>(
+      `${this.endpoint}/jwmapping/deleteAssign`,
+      { params }
+    );
+    return Observable;
+  }
 
-  getJobAssigns(){
+  getDistance(origin: string, destination: string){
+
+    let api = `${this.endpoint}/getDistance`;
+    let params = { origins: origin, destinations: destination};
+    return this.http.get(api, { params }).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+
+  }
+  
+  isValidPostcode(postcode:string){
+    let api = `${this.endpoint}/distanceMatrix`;
+    let params = { 
+      origins: "bb101pr",
+      destinations: postcode,
+    };
+    return this.http.get(api,{params}).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getJobAssigns() {
     let api = `${this.endpoint}/jwmapping/getAllJwmapping`;
     return this.http.get(api).pipe(
       map((res: any) => {
@@ -79,19 +116,16 @@ export class ManagerService {
     );
   }
 
-  getWorkersFromJob(jobID: any){
+  getWorkersFromJob(jobID: any) {
     let api = `${this.endpoint}/jwmapping/getAllWorkersFromJob`;
-    let params = {jobID: jobID}
-    return this.http.get(api,{params}).pipe(
+    let params = { jobID: jobID };
+    return this.http.get(api, { params }).pipe(
       map((res: any) => {
         return res || null;
       }),
       catchError(this.handleError)
     );
   }
-
-
-  
 
   handleError(error: HttpErrorResponse) {
     let msg = '';

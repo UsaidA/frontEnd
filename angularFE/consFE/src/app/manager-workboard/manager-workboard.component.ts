@@ -42,6 +42,7 @@ export class ManagerWorkboardComponent implements OnInit {
     window.scrollTo(0, 0);
     this.getJobData();
     this.getWorkerData();
+    //this.managerService.getDistance();
     // add the worker and job services here
 
     this.dtOptions = {
@@ -77,33 +78,6 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
 
-  checkVal(
-    jobID: any,
-    name: any,
-    description: any,
-    completed: any,
-    address: any
-  ) {
-    console.log(jobID, name, description, completed, address);
-
-    if (completed === 'true') {
-      console.log('has Attended true');
-      completed = 1;
-    } else if (completed === 'false') {
-      completed = 0;
-    }
-    var job = new Job(jobID, name, description, completed, address);
-
-    console.log(job, ': job OBJ');
-    var jwt = localStorage.getItem(jwtTokenKey);
-    if (jwt == null) {
-      console.log('null issue in manager workboard');
-    } else {
-      console.log(jwt);
-      sendJobData(jwt, job);
-    }
-    console.log(jwtTokenKey);
-  }
   openModal() {
     this.modalRef = this.modalService.open(ModalComponent, {
       data: { title: 'Job Details' },
@@ -111,7 +85,7 @@ export class ManagerWorkboardComponent implements OnInit {
 
     this.modalRef.onClose.subscribe((message: any) => {
       if (message) {
-        console.log(message);
+        
         var x: Job = JSON.parse(message);
 
         this.managerService
@@ -120,14 +94,14 @@ export class ManagerWorkboardComponent implements OnInit {
             this.getJobData();
           });
       } else {
-        console.log('nyet');
+        
       }
     });
   }
   openAssignModal(jobData: Job) {
     // the job parameter is passed upon modals creation in the datatable, the 'job' is passed in that moment
     this.getWorkerDataFromJob(jobData.jobID).subscribe((workerIdList: string[]) => {
-      console.log(jobData);
+   
       let temp:any = [...this.workerData];
       for(let i =0; i < temp.length; i++){ // new temp obj array, which extends workers but has an assigned property to tell the created modal which workers are already assinged to that job
         temp[i].assigned = 0;
@@ -156,14 +130,14 @@ export class ManagerWorkboardComponent implements OnInit {
 
       this.modalRef.onClose.subscribe((message: any) => {
         if (message) {
-          console.log(message);
+        
           var x: Jwmapping = JSON.parse(message);
   
           this.managerService
             .postJwmapping(x.workerID, x.jobID)
             
         } else {
-          console.log('nyet');
+          
         }
       });
 
@@ -174,35 +148,16 @@ export class ManagerWorkboardComponent implements OnInit {
   getWorkerDataFromJob(jobID: string): Observable<any> {
     return this.managerService.getWorkersFromJob(jobID).pipe(
       map((workers: any) => {
-        console.log(workers)
+       
         let workersIdList = new Array<string>(workers.length);
         for (let i = 0; i < workers.length; i++) {
           workersIdList[i] = workers[i].workerID;
         }
-        console.log(workersIdList);
+       
         return workersIdList;
       }),
       catchError((val) => of(`I caught: ${val}`))
     );
-  }
-
-  getDistance() {
-    console.log('fusodkhfaosdfia');
-    axios
-      .post(
-        'https://maps.googleapis.com/maps/api/distancematrix/json?origins=BB101PR&destinations=S2 4LW&units=imperial&key=AIzaSyBMdO8D7XlI17K5Yn_cgXHQ0LrZ7kws0u0',
-        { headers: { 'Content-Type': 'application/json' } }
-      )
-      .then((response) => {
-        if (
-          response.data == 'failed password' ||
-          response.data == "Email doesn't exist"
-        ) {
-          console.log(response.data);
-        } else {
-        }
-        console.log(response.data.rows[0].elements[0].distance);
-      });
   }
 
   LogOut() {

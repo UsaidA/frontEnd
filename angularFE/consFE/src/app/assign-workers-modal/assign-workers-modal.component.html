@@ -24,7 +24,7 @@
             <tbody>
                 <tr *ngFor = "let worker of AllWorkers">
                     <td> {{worker.firstName }} {{worker.lastName}}</td>
-                    <td> <input type = "checkbox" [(ngModel)]='worker.assigned' > </td>
+                    <td> <input type = "checkbox" [(ngModel)]='worker.assigned' (change)="checkVal(worker.workerID, worker.assigned? 'true':'false')" > </td>
                                 
                   
                 </tr>

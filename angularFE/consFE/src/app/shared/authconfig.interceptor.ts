@@ -7,11 +7,18 @@ export class AuthInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         const authToken = this.authService.getToken();
         if(authToken){
-            req = req.clone({
-                setHeaders: {
-                    Authorization: authToken
-                }
-            });
+
+            if(req.url.startsWith('http://localhost:8888')){
+                req = req.clone({
+                    setHeaders: {
+                        Authorization: authToken
+                    }
+                });
+                
+            }else{
+               
+            }
+           
             
         }
         return next.handle(req); 
