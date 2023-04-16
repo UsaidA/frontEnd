@@ -79,10 +79,15 @@ export class ManagerService {
     return Observable;
   }
 
-  getDistance(origin: string, destination: string){
+  getDistance(origin: string[], destination: string){
 
+    let originParam: string = "";
+    for (let i = 0; i < destination.length; i ++){
+      originParam = originParam +"|"+ origin[i]
+
+    }
     let api = `${this.endpoint}/getDistance`;
-    let params = { origins: origin, destinations: destination};
+    let params = { origins: originParam, destinations: destination};
     return this.http.get(api, { params }).pipe(
       map((res: any) => {
         return res || null;

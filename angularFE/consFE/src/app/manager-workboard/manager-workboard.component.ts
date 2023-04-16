@@ -85,7 +85,6 @@ export class ManagerWorkboardComponent implements OnInit {
 
     this.modalRef.onClose.subscribe((message: any) => {
       if (message) {
-        
         var x: Job = JSON.parse(message);
 
         this.managerService
@@ -94,66 +93,111 @@ export class ManagerWorkboardComponent implements OnInit {
             this.getJobData();
           });
       } else {
-        
       }
     });
   }
   openAssignModal(jobData: Job) {
     // the job parameter is passed upon modals creation in the datatable, the 'job' is passed in that moment
-    this.getWorkerDataFromJob(jobData.jobID).subscribe((workerIdList: string[]) => {
-   
-      let temp:any = [...this.workerData];
-      for(let i =0; i < temp.length; i++){ // new temp obj array, which extends workers but has an assigned property to tell the created modal which workers are already assinged to that job
-        temp[i].assigned = 0;
-        
-        for(let x = 0; x < workerIdList.length; x++){
-          if(temp[i].workerID  == workerIdList[x]){
-            temp[i].assigned = 1;
-          }
+    this.getWorkerDataFromJob(jobData.jobID).subscribe(
+      (workerIdList: string[]) => {
+        // all workers that have already been assigned that job with the id jobData.jobID
+
+        let workersWithAssignedProperty =
+          this.createWorkersWithAssignedProperty(workerIdList);
+        this.getDistance(
+          this.createArrayOfWorkerIDnWorkerAddress(),
+          jobData.address
+        ).subscribe((distancesArr: string[]) => {
+          
+          let workerObjWithAssignedNDistanceProperties =
+            this.addDistancesProperty(distancesArr, workersWithAssignedProperty);
+
+            
+          const modalOptions = {
+            modalClass: 'modal-dialog modal-xl',
+            data: {
+              Job: jobData,
+              AllWorkers: workerObjWithAssignedNDistanceProperties,
+            },
+          };
+
+          this.modalRef = this.modalService.open(
+            AssignWorkersModalComponent,
+            modalOptions
+          );
+
+          this.modalRef.onClose.subscribe((message: any) => {
+            if (message) {
+              var x: Jwmapping = JSON.parse(message);
+
+              this.managerService.postJwmapping(x.workerID, x.jobID);
+            } else {
+            }
+          });
+        });
+      }
+    );
+  }
+  createArrayOfWorkerIDnWorkerAddress() {
+    let temp = new Array<string>(this.workerData.length);
+
+    for (let i = 0; i < this.workerData.length; i++) {
+      temp[i] = this.workerData[i].address;
+    }
+    return temp;
+  }
+  addDistancesProperty(distances: string[], workerArrWithAssigned: string[]) {
+    let temp: any = [...workerArrWithAssigned];
+    for (let i = 0; i < temp.length; i++) {
+      temp[i].distance = distances[i];
+    }
+    return temp;
+  }
+  createWorkersWithAssignedProperty(workerIdList: string[]) {
+    let temp: any = [...this.workerData];
+    for (let i = 0; i < temp.length; i++) {
+      // new temp obj array, which extends workers but has an assigned property to tell the created modal which workers are already assinged to that job
+      temp[i].assigned = 0;
+
+      for (let x = 0; x < workerIdList.length; x++) {
+        if (temp[i].workerID == workerIdList[x]) {
+          temp[i].assigned = 1;
         }
       }
+    }
+    return temp;
+  }
 
-      
-      const modalOptions = {
-        modalClass: 'modal-dialog modal-xl',
-        data: {
-          Job: jobData,
-          AllWorkers: temp
-        },
-      };
+  getDistance(origin: string[], destination: string): Observable<any> {
 
-      this.modalRef = this.modalService.open(
-        AssignWorkersModalComponent,
-        modalOptions
-      );
-
-
-      this.modalRef.onClose.subscribe((message: any) => {
-        if (message) {
+    console.log(origin)
+    console.log(destination)
+    return this.managerService.getDistance(origin, destination).pipe(
+      map((distances: any) => {
         
-          var x: Jwmapping = JSON.parse(message);
-  
-          this.managerService
-            .postJwmapping(x.workerID, x.jobID)
-            
-        } else {
-          
+        let distancesList = new Array<string>(this.workerData.length);
+      
+        for (let i = 0; i < this.workerData.length; i++) {
+          console.log(this.workerData.length)
+          console.log(distances.rows[1].elements[0].distance.text)
+          distancesList[i] = distances.rows[i].elements[0].distance.text;
         }
-      });
-
-
-    });
+        console.log(distances)
+        console.log(distancesList)
+        return distancesList;
+      }),
+      catchError((val) => of(`I caught: ${val}`))
+    );
   }
 
   getWorkerDataFromJob(jobID: string): Observable<any> {
     return this.managerService.getWorkersFromJob(jobID).pipe(
       map((workers: any) => {
-       
         let workersIdList = new Array<string>(workers.length);
         for (let i = 0; i < workers.length; i++) {
           workersIdList[i] = workers[i].workerID;
         }
-       
+
         return workersIdList;
       }),
       catchError((val) => of(`I caught: ${val}`))
