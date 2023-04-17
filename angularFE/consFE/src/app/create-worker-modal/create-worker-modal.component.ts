@@ -35,8 +35,8 @@ export class CreateWorkerModalComponent {
                 '',
                 firstName.value,
                 lastName.value,
-                address.value,
-                email.value
+                email.value,
+                address.value
               );
               const JSONOBJ = JSON.stringify(worker);
 
