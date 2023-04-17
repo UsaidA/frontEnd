@@ -78,6 +78,24 @@ export class ManagerWorkboardComponent implements OnInit {
       this.workerData = workers ?? []; // if workers is null or undefined,  assign []
     });
   }
+
+  openModal() {
+    this.modalRef = this.modalService.open(ModalComponent, {
+      data: { title: 'Job Details' },
+    });
+
+    this.modalRef.onClose.subscribe((message: any) => {
+      if (message) {
+        var x: Job = JSON.parse(message);
+        this.managerService
+          .postJob(x.name, x.description, x.completed, x.address)
+          .subscribe((res: any) => {
+            this.getJobData();
+          });
+      } else {
+      }
+    });
+  }
   openWorkerCreationModal() {
     this.modalRef = this.modalService.open(CreateWorkerModalComponent);
 
@@ -96,35 +114,20 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
 
-  openModal() {
-    this.modalRef = this.modalService.open(ModalComponent);
 
-    this.modalRef.onClose.subscribe((message: any) => {
-      if (message) {
-        var x: Job = JSON.parse(message);
-
-        this.managerService
-          .postJob(x.name, x.description, x.completed, x.address)
-          .subscribe((res: any) => {
-            this.getJobData();
-          });
-      } else {
-      }
-    });
-  }
   openAssignModal(jobData: Job) {
     // the job parameter is passed upon modals creation in the datatable, the 'job' is passed in that moment
     this.getWorkerDataFromJob(jobData.jobID).subscribe(
       (workerIdList: string[]) => {
         // all workers that have already been assigned that job with the id jobData.jobID
 
-        let workersWithAssignedProperty =
-          this.createWorkersWithAssignedProperty(workerIdList);
-        this.getDistance(
-          this.createArrayOfWorkerIDnWorkerAddress(),
+        let workersWithAssignedProperty = this.createWorkersWithAssignedProperty(workerIdList); //adds the 'assigned' property to the array of worker objects (are the workers assigned that specific job or not)
+        this.getDistance( // array of distances in the same order as the workers array
+          this.createArrayWorkerAddress(),
           jobData.address
         ).subscribe((distancesArr: string[]) => {
           
+          console.log(distancesArr)
           let workerObjWithAssignedNDistanceProperties =
             this.addDistancesProperty(distancesArr, workersWithAssignedProperty);
 
@@ -154,7 +157,7 @@ export class ManagerWorkboardComponent implements OnInit {
       }
     );
   }
-  createArrayOfWorkerIDnWorkerAddress() {
+  createArrayWorkerAddress() {
     let temp = new Array<string>(this.workerData.length);
 
     for (let i = 0; i < this.workerData.length; i++) {
@@ -186,20 +189,16 @@ export class ManagerWorkboardComponent implements OnInit {
 
   getDistance(origin: string[], destination: string): Observable<any> {
 
-    console.log(origin)
-    console.log(destination)
+    
+    
     return this.managerService.getDistance(origin, destination).pipe(
       map((distances: any) => {
         
         let distancesList = new Array<string>(this.workerData.length);
-      
+
         for (let i = 0; i < this.workerData.length; i++) {
-          console.log(this.workerData.length)
-          console.log(distances.rows[1].elements[0].distance.text)
           distancesList[i] = distances.rows[i].elements[0].distance.text;
         }
-        console.log(distances)
-        console.log(distancesList)
         return distancesList;
       }),
       catchError((val) => of(`I caught: ${val}`))

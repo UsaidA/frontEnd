@@ -91,12 +91,12 @@ export class ManagerService {
   getDistance(origin: string[], destination: string){
 
     let originParam: string = "";
-    for (let i = 0; i < destination.length; i ++){
+    for (let i = 0; i < origin.length; i ++){
       originParam = originParam +"|"+ origin[i]
-
     }
     let api = `${this.endpoint}/getDistance`;
     let params = { origins: originParam, destinations: destination};
+ 
     return this.http.get(api, { params }).pipe(
       map((res: any) => {
         return res || null;
