@@ -56,6 +56,15 @@ export class ManagerService {
     return Observable;
   }
 
+  postWorker(firstName: string, lastName:string, address:string, email:string){
+    const Observable = this.http.post<any>(
+      `${this.endpoint}/workers/createNewWorker`,
+      { firstName, lastName, address, email }
+    );
+    return Observable;
+
+  }
+
   postJwmapping(workerID: string, jobID: string) {
     console.log({ workerID, jobID });
 

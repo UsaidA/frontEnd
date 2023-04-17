@@ -91,13 +91,15 @@
 
                 &nbsp;
                 <div class = "card mb-4">
+                    <button class="btn btn-primary" (click)="openWorkerCreationModal()">Create Worker</button>
                     <div>
+                       
                         <table *ngIf="workerData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
                             <thead>
                                 <tr>
-                                    <th>CourseID</th>
-                                    <th>GroupID</th>
-                                    <th>Percentage</th>
+                                    <th>Name</th>
+                                    <th>email</th>
+                                    <th>House Address</th>
                                     
                                     
                                 </tr>
@@ -105,9 +107,9 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor = "let worker of workerData">
-                                    <td> {{worker.workerID}}</td>
-                                    <td> {{worker.firstName}}</td>
-                                    <td>  {{worker.lastName}}</td>
+                                    <td> {{worker.firstName}} {{worker.lastName}}</td>
+                                    <td> {{worker.email}}</td>
+                                    <td>  {{worker.address}}</td>
                                 </tr>
                             </tbody>
                         </table>

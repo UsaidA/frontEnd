@@ -11,6 +11,7 @@ import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalComponent } from '../modal/modal.component';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { AssignWorkersModalComponent } from '../assign-workers-modal/assign-workers-modal.component';
+import { CreateWorkerModalComponent } from '../create-worker-modal/create-worker-modal.component';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -77,11 +78,26 @@ export class ManagerWorkboardComponent implements OnInit {
       this.workerData = workers ?? []; // if workers is null or undefined,  assign []
     });
   }
+  openWorkerCreationModal() {
+    this.modalRef = this.modalService.open(CreateWorkerModalComponent);
+
+    this.modalRef.onClose.subscribe((worker: any) => {
+      if (worker) {
+        var x: Worker = JSON.parse(worker);
+
+        this.managerService
+          .postWorker(x.firstName, x.lastName, x.address, x.email) /// change to postWOrker 
+          .subscribe((res: any) => {
+
+            this.getWorkerData();
+          });
+      } else {
+      }
+    });
+  }
 
   openModal() {
-    this.modalRef = this.modalService.open(ModalComponent, {
-      data: { title: 'Job Details' },
-    });
+    this.modalRef = this.modalService.open(ModalComponent);
 
     this.modalRef.onClose.subscribe((message: any) => {
       if (message) {
