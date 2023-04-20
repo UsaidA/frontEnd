@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
-import { WorkerModalComponent } from '../worker-modal/worker-modal.component';
-import { Job } from 'src/classes';
+import { WorkerModalComponent } from '../modals/worker-modal/worker-modal.component';
+import { Job, Travels } from 'src/classes';
 import { Router } from '@angular/router';
 import { WorkerService } from '../shared/worker.service';
 import { AuthService } from '../shared/auth.service';
+import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
 
 @Component({
   selector: 'app-worker-workboard',
@@ -15,13 +16,16 @@ import { AuthService } from '../shared/auth.service';
 export class WorkerWorkboardComponent {
   dtTrigger: Subject<any> = new Subject();
   modalRef: MdbModalRef<WorkerModalComponent> | null = null;
+  today: string = new Date().toISOString().slice(0, 10);
+  workerID = '';
   firstName = '';
   lastName = '';
   email = '';
-  temp = '';
+  workerAddress = '';
+  
 
   public jData: Job[] = [];
-  public workerData: Worker[] = [];
+ 
   constructor(
     private router: Router,
     private workerService: WorkerService,
@@ -32,7 +36,6 @@ export class WorkerWorkboardComponent {
     window.scrollTo(0, 0);
     this.getJobData();
     this.getWorkerDetails();
-    // add the worker and job services here
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -52,26 +55,27 @@ export class WorkerWorkboardComponent {
   }
   getWorkerDetails() {
     this.workerService.getWorkersDetails().subscribe((worker: any) => {
-      console.log(worker);
+  
+      this.workerID = worker.workerID
       this.firstName = worker.firstName;
       this.lastName = worker.lastName;
       this.email = worker.email;
+      this.workerAddress = worker.address;
     });
   }
-  // getImageKeysFromJob(jobID:string){
+  postTravelDetails(jobData:Job){
+    let origin: string[] = [];
+    origin[0] = this.workerAddress;
+    this.workerService.getDistance(origin, jobData.address).subscribe((distance:any)=>{
+      if (distance.status === "OK"){
+        console.log(this.workerID,this.firstName, "worker id")
+        console.log(this.workerID,jobData.jobID,distance.rows[0].elements[0].distance.value,this.today)
+        this.workerService.postTravelObj(this.workerID,jobData.jobID,distance.rows[0].elements[0].distance.value,this.today).subscribe();
+      }
+    })
 
-  //   this.workerService.getImageKeysForJob(jobID).subscribe((keys: any) => {
-  //     console.log(keys, "keys")
-  //     let keysList = new Array<string>(keys.length)
-  //     for (let i = 0; i < keys.length; i ++){
-  //       keysList[i] = "http://localhost:8888/api/images/" + keys[i].image_key
-  //     }
+  }
 
-  //     console.log(keysList)
-  //     return keys;
-
-  //   });
-  // }
   getImageKeysFromJob(jobID: string): Observable<any> {
     return this.workerService.getImageKeysForJob(jobID).pipe(
       map((keys: any) => {
@@ -91,7 +95,6 @@ export class WorkerWorkboardComponent {
     this.authService.doLogout();
   }
   openModal(jobData: Job) {
-
     this.getImageKeysFromJob(jobData.jobID).subscribe((keyList: string[]) => {
       console.log(keyList);
       const modalOptions = {
@@ -109,19 +112,47 @@ export class WorkerWorkboardComponent {
       );
     });
   }
-  onFileSelected(event: any, job : Job) {
+  openTravelModal(jobData: Job) {
+    this.workerService
+      .getTravelDetails(jobData.jobID)
+      .subscribe((travelDetails: any) => {
+        const objects: Travels[] = travelDetails;
+        let travelStatus = "";
+ 
+        for (const obj of objects) {
+          if (obj.dateTravelled === this.today) {
+            travelStatus = "Already Travelled Today";
+            break; 
+          }
+        }
+        if( travelStatus === ""){
+          
+          this.postTravelDetails(jobData)
+          travelStatus = "Travel Submitted"
+        }
+        const modalOptions = {
+          modalClass: 'modal-dialog-scrollable',
+          data: {
+            travel: travelStatus,
+          },
+        };
+        this.modalRef = this.modalService.open(
+          TravelModalComponent,
+          modalOptions
+        );
+      });
+  }
+  onFileSelected(event: any, job: Job) {
     const file: File = event.target.files[0];
     this.uploadFile(file, job);
   }
-  
+
   uploadFile(file: File, job: Job) {
-    
-    this.workerService.uploadFile(file,job).subscribe((res: any) => {
+    this.workerService.uploadFile(file, job).subscribe((res: any) => {
       console.log(res);
-      
     });
-   
   }
+
   checkVal(
     jobID: any,
     name: any,

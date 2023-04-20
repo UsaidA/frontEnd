@@ -11,12 +11,13 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/authconfig.interceptor';
-import { ModalComponent } from './modal/modal.component';
+import { CreateJobModalComponent } from './modals/create-job-modal/modal.component';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
-import { WorkerModalComponent } from './worker-modal/worker-modal.component';
-import { AssignWorkersModalComponent } from './assign-workers-modal/assign-workers-modal.component';
-import { CreateWorkerModalComponent } from './create-worker-modal/create-worker-modal.component';
+import { WorkerModalComponent } from './modals/worker-modal/worker-modal.component';
+import { AssignWorkersModalComponent } from './modals/assign-workers-modal/assign-workers-modal.component';
+import { CreateWorkerModalComponent } from './modals/create-worker-modal/create-worker-modal.component';
+import { TravelModalComponent } from './modals/travel-modal/travel-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +25,12 @@ import { CreateWorkerModalComponent } from './create-worker-modal/create-worker-
     TopBarComponent,
     LoginComponent,
     ManagerWorkboardComponent,
-    ModalComponent,
+    CreateJobModalComponent,
     WorkerWorkboardComponent,
     WorkerModalComponent,
     AssignWorkersModalComponent,
-    CreateWorkerModalComponent,
+    CreateJobModalComponent,
+    TravelModalComponent,
     
     
    

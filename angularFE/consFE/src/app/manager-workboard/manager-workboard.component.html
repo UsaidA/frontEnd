@@ -100,6 +100,7 @@
                                     <th>Name</th>
                                     <th>email</th>
                                     <th>House Address</th>
+                                    <th>Travel History</th>
                                     
                                     
                                 </tr>
@@ -110,6 +111,7 @@
                                     <td> {{worker.firstName}} {{worker.lastName}}</td>
                                     <td> {{worker.email}}</td>
                                     <td>  {{worker.address}}</td>
+                                    <td> <button class="btn btn-primary" (click)="openWorkersTravelHistoryModal(worker.workerID)">Open History</button></td>
                                 </tr>
                             </tbody>
                         </table>

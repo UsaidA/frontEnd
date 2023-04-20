@@ -88,6 +88,19 @@ export class ManagerService {
     return Observable;
   }
 
+  getWorkerTravelHistory(workerID:string){
+
+    let api = `${this.endpoint}/travels/getWorkerTravelHistory`;
+    let params = { workerID: workerID};
+ 
+    return this.http.get(api, { params }).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+
+  }
   getDistance(origin: string[], destination: string){
 
     let originParam: string = "";

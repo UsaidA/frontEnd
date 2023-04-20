@@ -1,47 +1,44 @@
+import { ManagerService } from './../../shared/manager.service';
 import { Component } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
-import { Job } from 'src/classes';
-import { ManagerService } from '../shared/manager.service';
+import { Worker } from 'src/classes';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'app-create-worker-modal',
+  templateUrl: './create-worker-modal.component.html',
+  styleUrls: ['./create-worker-modal.component.scss']
 })
-export class ModalComponent {
-  constructor(
-    public modalRef: MdbModalRef<ModalComponent>,
-    public managerService: ManagerService
-  ) {}
+export class CreateWorkerModalComponent {
+  constructor(public modalRef: MdbModalRef<CreateWorkerModalComponent>, public managerService: ManagerService) {}
 
   close(): void {
     const closeMessage = 'Model closed';
     this.modalRef.close(closeMessage);
   }
 
-  saveJob(jobName: any, jobDes: any, jobAddress: any): void {
+  saveJob(firstName: any, lastName: any, address: any, email:any): void {
     const regex = new RegExp(
       '^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$'
     );
 
-    if (regex.test(jobAddress.value)) {
+    if (regex.test(address.value)) {
       console.log('hi');
 
       this.managerService
-        .isValidPostcode(jobAddress.value)
+        .isValidPostcode(address.value)
         .subscribe((response: any) => {
           
 
             if (response.status=== 'OK') {
               console.log('inside saveJob');
-              const job = new Job(
+              const worker = new Worker(
                 '',
-                jobName.value,
-                jobDes.value,
-                '0',
-                jobAddress.value
+                firstName.value,
+                lastName.value,
+                email.value,
+                address.value
               );
-              const JSONOBJ = JSON.stringify(job);
+              const JSONOBJ = JSON.stringify(worker);
 
               this.modalRef.close(JSONOBJ);
             } else {
@@ -53,4 +50,5 @@ export class ModalComponent {
       console.log('bye');
     }
   }
+
 }

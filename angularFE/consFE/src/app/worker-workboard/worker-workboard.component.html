@@ -1,3 +1,5 @@
+
+
 <body style="background-color:rgb(232, 232, 232);">
     <div class="container-xl px-4 mt-4">
         <!-- Account page navigation-->
@@ -65,17 +67,20 @@
                 </div>
             </div>
             <div class="col-xl-8">
-    
+  
                 <div class =" card mb-4">
                     <table *ngIf="jData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
                         <thead>
                             <tr>
                                 <th>Job Name</th>
                                 <th>Job Description</th>
-                                <th>Job Complete</th>
+                                
                                 
                                 <th>image Edit</th>
                                 <th>Upload Image</th>
+                                <th>Job Travel</th>
+                                <th>Job Complete</th>
+                                
                             </tr>
                             
                         </thead>
@@ -83,12 +88,15 @@
                             <tr *ngFor = "let job of jData">
                                 <td> {{job.name}}</td>
                                 <td> {{job.description}}</td>
-                                <td> <input type = "checkbox" [(ngModel)]='job.completed' (change)="checkVal(job.jobID, job.name, job.description, job.completed? 'true':'false', job.address)"> </td>
                                 <td><button class="btn btn-primary" (click)="openModal(job)">Open modal</button></td>
                                 <td><form enctype="multipart/form-data">
                                     <input type="file" (change)="onFileSelected($event, job)" />
                                   </form>
                                 </td>
+                                <td><button class="btn btn-primary" (click)="openTravelModal(job)">Open modal</button></td>
+                                <td> <input type = "checkbox" [(ngModel)]='job.completed' (change)="checkVal(job.jobID, job.name, job.description, job.completed? 'true':'false', job.address)"> </td>
+                                
+
                             </tr>
                         </tbody>
                     </table>

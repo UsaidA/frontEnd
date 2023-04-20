@@ -47,12 +47,12 @@ class Jwmapping{
     }
 }
 class Travels{
-    constructor(public travelID:string , public workerID: string, public startPoint: string, public endPoint:string, public distanceTravelled: string){
+    constructor(public travelID:string , public workerID: string, public jobID: string, public distanceTravelled: string, public dateTravelled: string){
         this.travelID = travelID;
         this.workerID = workerID;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
+        this.jobID = jobID;
         this.distanceTravelled = distanceTravelled;
+        this.dateTravelled = dateTravelled;
     }
 
 }

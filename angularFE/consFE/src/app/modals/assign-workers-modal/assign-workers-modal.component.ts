@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Job, Jwmapping, Worker } from '../../classes';
+import { Job, Jwmapping, Worker } from '../../../classes';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
-import { ManagerService } from '../shared/manager.service';
+import { ManagerService } from '../../shared/manager.service';
 
 @Component({
   selector: 'app-assign-workers-modal',

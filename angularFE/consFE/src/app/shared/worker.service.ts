@@ -29,6 +29,44 @@ export class WorkerService {
       catchError(this.handleError)
     );
   }
+  getDistance(origin: string[], destination: string){
+
+    let originParam: string = "";
+    for (let i = 0; i < origin.length; i ++){
+      originParam = originParam +"|"+ origin[i]
+    }
+    let api = `${this.endpoint}/getDistance`;
+    let params = { origins: originParam, destinations: destination};
+ 
+    return this.http.get(api, { params }).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+
+  }
+
+  getTravelDetails(jobID: string){
+    let api = `${this.endpoint}/travels/allTravelsForJob`;
+    let params = {jobID: jobID}
+    return this.http.get(api,{params}).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+  }
+  postTravelObj(workerID:string, jobID:string, distanceTravelled:string, dateTravelled:string) {
+    console.log({jobID, workerID, distanceTravelled, dateTravelled });
+
+    const Observable = this.http.post<any>(
+      `${this.endpoint}/travels/postTravelObj`,
+      {jobID,workerID, distanceTravelled, dateTravelled  }
+    );
+    return Observable;
+  }
+
   getWorkersDetails() {
     let api = `${this.endpoint}/workers/getWorkerDetails`;
     return this.http.get(api).pipe(

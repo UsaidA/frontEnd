@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
-import { Job, Jwmapping, Worker } from '../../classes';
+import { Job, Jwmapping, Travels, Worker } from '../../classes';
 import { DataTablesModule } from 'angular-datatables';
 import { Router } from '@angular/router';
 import { allJobsKey, allWorkerKey, jwtTokenKey } from 'src/services/itemsKeys';
@@ -8,10 +8,11 @@ import { sendJobData } from 'src/services/services';
 import { ManagerService } from '../shared/manager.service';
 import { AuthService } from '../shared/auth.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { ModalComponent } from '../modal/modal.component';
+import { CreateJobModalComponent } from '../modals/create-job-modal/modal.component';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
-import { AssignWorkersModalComponent } from '../assign-workers-modal/assign-workers-modal.component';
-import { CreateWorkerModalComponent } from '../create-worker-modal/create-worker-modal.component';
+import { AssignWorkersModalComponent } from '../modals/assign-workers-modal/assign-workers-modal.component';
+import { CreateWorkerModalComponent } from '../modals/create-worker-modal/create-worker-modal.component';
+import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -20,7 +21,7 @@ import { CreateWorkerModalComponent } from '../create-worker-modal/create-worker
 })
 export class ManagerWorkboardComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
-  modalRef: MdbModalRef<ModalComponent> | null = null;
+  modalRef: MdbModalRef<CreateJobModalComponent> | null = null;
   firstName = '';
   lastName = '';
   email = '';
@@ -80,7 +81,7 @@ export class ManagerWorkboardComponent implements OnInit {
   }
 
   openModal() {
-    this.modalRef = this.modalService.open(ModalComponent, {
+    this.modalRef = this.modalService.open(CreateJobModalComponent, {
       data: { title: 'Job Details' },
     });
 
@@ -97,7 +98,7 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
   openWorkerCreationModal() {
-    this.modalRef = this.modalService.open(CreateWorkerModalComponent);
+    this.modalRef = this.modalService.open(CreateJobModalComponent);
 
     this.modalRef.onClose.subscribe((worker: any) => {
       if (worker) {
@@ -112,6 +113,24 @@ export class ManagerWorkboardComponent implements OnInit {
       } else {
       }
     });
+  }
+
+  openWorkersTravelHistoryModal(workerID:string) {
+    this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
+      const travels: Travels[] = res;
+      const modalOptions = {
+        modalClass: 'modal-dialog modal-xl',
+        data: {
+          allTravels: travels,
+          opener:1 // indicating the manager is 
+        },
+      };
+      this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
+
+    })
+    
+
+  
   }
 
 
