@@ -55,6 +55,22 @@ export class ManagerService {
     );
     return Observable;
   }
+  deleteJob(jobID:string, name:string, description:string,completed:string, address:string ){
+    console.log({ jobID, name,description,completed,address });
+    let params = {
+      jobID: jobID,
+      name: name,
+      description: description,
+      completed: completed,
+      address:address
+    };
+    const Observable = this.http.delete<any>(
+      `${this.endpoint}/jobs/deleteJob`,
+      { params }
+    );
+    return Observable;
+
+  }
 
   postWorker(firstName: string, lastName:string, address:string, email:string){
     const Observable = this.http.post<any>(

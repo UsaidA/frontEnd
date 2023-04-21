@@ -20,6 +20,7 @@ import { CreateWorkerModalComponent } from './modals/create-worker-modal/create-
 import { TravelModalComponent } from './modals/travel-modal/travel-modal.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { KmConversionPipe } from './shared/km-conversion.pipe';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AssignWorkersModalComponent,
     CreateJobModalComponent,
     TravelModalComponent,
+    KmConversionPipe
     
     
    

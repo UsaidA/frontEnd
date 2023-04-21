@@ -152,15 +152,29 @@ export class ManagerWorkboardComponent implements OnInit {
 
   openWorkersTravelHistoryModal(workerID:string) {
     this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
-      const travels: Travels[] = res;
+      if (res[0]){ //if res isn't undefined
+        console.log(res)
+        const travels: Travels[] = res;
       const modalOptions = {
         modalClass: 'modal-dialog modal-xl',
         data: {
           allTravels: travels,
-          opener:1 // indicating the manager is 
+          opener:1 // controlling the state of the travel Modal - 0 would indicate no datatable
         },
       };
       this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
+      }else{
+
+        const modalOptions = {
+          modalClass: 'modal-dialog modal-xl',
+          data: {
+            travelStatus: "No History",
+            opener: 0
+          },
+        };
+        this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
+      }
+    
 
     })
     
@@ -257,6 +271,18 @@ export class ManagerWorkboardComponent implements OnInit {
       }),
       catchError((val) => of(`I caught: ${val}`))
     );
+  }
+  confirmDelete(jobID:string, name:string, description:string,completed:string, address:string ){
+    if (confirm("Are you sure you want to delete permanently?")) {
+      // user clicked OK
+      console.log("User confirmed deletion");
+      this.managerService.deleteJob(jobID,name,description,completed,address).subscribe(()=>{
+        this.getJobData();
+      })
+    } else {
+      // user clicked Cancel
+      console.log("User canceled deletion");
+    }
   }
 
   getWorkerDataFromJob(jobID: string): Observable<any> {

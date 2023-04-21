@@ -75,6 +75,7 @@
                                 <th>Job Description</th>
                                 <th>Assign Workers</th>
                                 <th>Job Images</th>
+                                <th>Delete Job</th>
                             </tr>
                             
                         </thead>
@@ -82,8 +83,9 @@
                             <tr *ngFor = "let job of jData">
                                 <td> {{job.name}}</td>
                                 <td> {{job.description}}</td>
-                                <td> <button class="btn btn-primary" (click)="openAssignModal(job)">Assign Workers </button></td>
-                                <td><button class="btn btn-primary" (click)="openImagesModal(job)">View Images</button></td>
+                                <td> <button class="btn btn-primary" (click)="openAssignModal(job)">Assign</button></td>
+                                <td><button class="btn btn-primary" (click)="openImagesModal(job)">View</button></td>
+                                <td><button class = "btn btn-danger" (click)="confirmDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
                             </tr>
                         </tbody>
                     </table>

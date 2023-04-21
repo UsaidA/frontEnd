@@ -8,12 +8,12 @@
     ></button>
   </div>
 
-  <div *ngIf="opener == 0">
-    <a>{{travelStatus}}</a>
+  <div *ngIf="opener == 0" class = "text-center">
+    <a class="text-center font-weight-bold" style="font-size: 1.2rem">{{travelStatus}}</a>
 
   </div>
 
-  <div *ngIf="opener > 0" class="form-outline form-white mb-4 form-group">
+  <div *ngIf="opener == 1 && allTravels" class="form-outline form-white mb-4 form-group">
    
     <div class = "card mb-4">
         <div class = "">
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor = "let travel of allTravels">
-                        <td> {{travel.distanceTravelled}}</td>
+                        <td> {{travel.distanceTravelled | kmConversion}}</td>
 
                         <td>{{travel.dateTravelled}}</td>    
                       
