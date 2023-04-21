@@ -74,6 +74,7 @@
                                 <th>Job Name</th>
                                 <th>Job Description</th>
                                 <th>Assign Workers</th>
+                                <th>Job Images</th>
                             </tr>
                             
                         </thead>
@@ -82,6 +83,7 @@
                                 <td> {{job.name}}</td>
                                 <td> {{job.description}}</td>
                                 <td> <button class="btn btn-primary" (click)="openAssignModal(job)">Assign Workers </button></td>
+                                <td><button class="btn btn-primary" (click)="openImagesModal(job)">View Images</button></td>
                             </tr>
                         </tbody>
                     </table>

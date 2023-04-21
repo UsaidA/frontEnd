@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
-import { WorkerModalComponent } from '../modals/worker-modal/worker-modal.component';
+import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal.component';
 import { Job, Travels } from 'src/classes';
 import { Router } from '@angular/router';
 import { WorkerService } from '../shared/worker.service';
 import { AuthService } from '../shared/auth.service';
 import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
+import { CommonService } from '../shared/common.service';
 
 @Component({
   selector: 'app-worker-workboard',
@@ -15,7 +16,7 @@ import { TravelModalComponent } from '../modals/travel-modal/travel-modal.compon
 })
 export class WorkerWorkboardComponent {
   dtTrigger: Subject<any> = new Subject();
-  modalRef: MdbModalRef<WorkerModalComponent> | null = null;
+  modalRef: MdbModalRef<viewJobImagesModalComponent> | null = null;
   today: string = new Date().toISOString().slice(0, 10);
   workerID = '';
   firstName = '';
@@ -29,6 +30,7 @@ export class WorkerWorkboardComponent {
   constructor(
     private router: Router,
     private workerService: WorkerService,
+    private commonService: CommonService,
     private authService: AuthService,
     private modalService: MdbModalService
   ) {}
@@ -42,6 +44,7 @@ export class WorkerWorkboardComponent {
       pageLength: 5,
       lengthMenu: [5, 15, 25],
       processing: true,
+      autoWidth: false
     };
   }
 
@@ -77,7 +80,7 @@ export class WorkerWorkboardComponent {
   }
 
   getImageKeysFromJob(jobID: string): Observable<any> {
-    return this.workerService.getImageKeysForJob(jobID).pipe(
+    return this.commonService.getImageKeysForJob(jobID).pipe(
       map((keys: any) => {
         let keysList = new Array<string>(keys.length);
         for (let i = 0; i < keys.length; i++) {
@@ -94,11 +97,11 @@ export class WorkerWorkboardComponent {
   LogOut() {
     this.authService.doLogout();
   }
-  openModal(jobData: Job) {
+  openImagesModal(jobData: Job) {
     this.getImageKeysFromJob(jobData.jobID).subscribe((keyList: string[]) => {
       console.log(keyList);
       const modalOptions = {
-        modalClass: 'modal-dialog-scrollable',
+        modalClass: 'modal-xl',
         data: {
           Job: jobData,
           imageList: keyList,
@@ -107,11 +110,12 @@ export class WorkerWorkboardComponent {
 
       console.log('this should be second to keys');
       this.modalRef = this.modalService.open(
-        WorkerModalComponent,
+        viewJobImagesModalComponent,
         modalOptions
       );
     });
   }
+
   openTravelModal(jobData: Job) {
     this.workerService
       .getTravelDetails(jobData.jobID)
@@ -130,10 +134,12 @@ export class WorkerWorkboardComponent {
           this.postTravelDetails(jobData)
           travelStatus = "Travel Submitted"
         }
+       
         const modalOptions = {
           modalClass: 'modal-dialog-scrollable',
           data: {
-            travel: travelStatus,
+            travelStatus: travelStatus,
+            opener: 0
           },
         };
         this.modalRef = this.modalService.open(
@@ -160,11 +166,11 @@ export class WorkerWorkboardComponent {
     completed: any,
     address: any
   ) {
-    /*
+
     console.log(jobID, name, description, completed, address);
 
     if (completed === 'true') {
-      console.log('has Attended true');
+      console.log('Job Complete');
       completed = 1;
     } else if (completed === 'false') {
       completed = 0;
@@ -172,14 +178,8 @@ export class WorkerWorkboardComponent {
     var job = new Job(jobID, name, description, completed, address);
 
     console.log(job, ': job OBJ');
-    var jwt = localStorage.getItem(jwtTokenKey);
-    if (jwt == null) {
-      console.log('null issue in manager workboard');
-    } else {
-      console.log(jwt);
-      sendJobData(jwt, job);
-    }
-    console.log(jwtTokenKey); */
+    
+    this.workerService.postJobObj(jobID, name, description,completed, address).subscribe();
   }
 
   ngOndestroy() {

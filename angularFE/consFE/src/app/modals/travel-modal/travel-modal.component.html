@@ -7,6 +7,12 @@
       (click)="modalRef.close()"
     ></button>
   </div>
+
+  <div *ngIf="opener == 0">
+    <a>{{travelStatus}}</a>
+
+  </div>
+
   <div *ngIf="opener > 0" class="form-outline form-white mb-4 form-group">
    
     <div class = "card mb-4">

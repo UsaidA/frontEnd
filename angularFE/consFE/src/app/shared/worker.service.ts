@@ -86,13 +86,23 @@ export class WorkerService {
     );
   }
 
-  getImageKeysForJob(jobIDP: string){
-    let api = `${this.endpoint}/images/allKeysFromJob`;
-    let params = {jobID: jobIDP}
-    return this.http.get(api,{params} ).pipe(
-      
+  postJobObj(jobID:string, name:string, description:string, completed:string, address:string) {
+    console.log({jobID, name, description, completed,address });
+    console.log("test")
+    const Observable = this.http.put<any>(
+      `${this.endpoint}/jobs/updateJob`,
+      {jobID, name, description, completed,address }
     );
+    return Observable;
   }
+
+  // getImageKeysForJob(jobIDP: string){
+  //   let api = `${this.endpoint}/images/allKeysFromJob`;
+  //   let params = {jobID: jobIDP}
+  //   return this.http.get(api,{params} ).pipe(
+      
+  //   );
+  // }
 
  
 

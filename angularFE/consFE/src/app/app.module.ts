@@ -14,10 +14,13 @@ import { AuthInterceptor } from './shared/authconfig.interceptor';
 import { CreateJobModalComponent } from './modals/create-job-modal/modal.component';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
-import { WorkerModalComponent } from './modals/worker-modal/worker-modal.component';
+import { viewJobImagesModalComponent } from './modals/images-modal/images-modal.component';
 import { AssignWorkersModalComponent } from './modals/assign-workers-modal/assign-workers-modal.component';
 import { CreateWorkerModalComponent } from './modals/create-worker-modal/create-worker-modal.component';
 import { TravelModalComponent } from './modals/travel-modal/travel-modal.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +30,7 @@ import { TravelModalComponent } from './modals/travel-modal/travel-modal.compone
     ManagerWorkboardComponent,
     CreateJobModalComponent,
     WorkerWorkboardComponent,
-    WorkerModalComponent,
+    viewJobImagesModalComponent,
     AssignWorkersModalComponent,
     CreateJobModalComponent,
     TravelModalComponent,
@@ -42,7 +45,9 @@ import { TravelModalComponent } from './modals/travel-modal/travel-modal.compone
     DataTablesModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CarouselModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

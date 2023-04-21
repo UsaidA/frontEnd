@@ -20,37 +20,53 @@ export class AuthService {
   constructor(private http: HttpClient, public router: Router) {}
 
   signIn(email: string, password: string) {
+    const Observable = this.http.post<any>(`${this.endpoint}/login`, {
+      email,
+      password,
+    });
 
-    const Observable =  this.http
-      .post<any>(`${this.endpoint}/login`, { email, password })
-    
-    Observable.subscribe((res: any) => { // subscribe is the fullfillment of the promise
-        if (res?.accessToken) {
-          localStorage.setItem(jwtTokenKey, res.accessToken);
-          localStorage.setItem(accessControlKey, res.accessControl)
-        }
-      });
-      return Observable;
+    Observable.subscribe((res: any) => {
+      // subscribe is the fullfillment of the promise
+      if (res?.accessToken) {
+        localStorage.setItem(jwtTokenKey, res.accessToken);
+        localStorage.setItem(accessControlKey, res.accessControl);
+      }
+    });
+    return Observable;
   }
+
   getToken() {
     return localStorage.getItem(jwtTokenKey);
   }
-  get isLoggedIn(): boolean {
-    let authToken = localStorage.getItem(jwtTokenKey);
-    let accessControl = localStorage.getItem(accessControlKey);
-    if (authToken !== null && accessControl === "1"){
-      return true;
-    }else{
-      return false
-    }
+  // get isLooggedIn(): boolean {
+  //   let authToken = localStorage.getItem(jwtTokenKey);
+  //   let accessControl = localStorage.getItem(accessControlKey);
+  //   if (authToken !== null && accessControl === '1') {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+  get isLoggedIn(): Observable<boolean> {
+    return new Observable(observer => {
+      let authToken = localStorage.getItem(jwtTokenKey);
+      let accessControl = localStorage.getItem(accessControlKey);
+      if (authToken !== null && accessControl === '1') {
+        observer.next(true);
+        observer.complete();
+      } else {
+        observer.next(false);
+        observer.complete();
+      }
+    });
   }
   get isWorkerLoggedIn(): boolean {
     let authToken = localStorage.getItem(jwtTokenKey);
-    
-    if (authToken !== null ){
+
+    if (authToken !== null) {
       return true;
-    }else{
-      return false
+    } else {
+      return false;
     }
   }
   doLogout() {

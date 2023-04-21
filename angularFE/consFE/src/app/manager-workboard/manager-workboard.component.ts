@@ -13,6 +13,8 @@ import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { AssignWorkersModalComponent } from '../modals/assign-workers-modal/assign-workers-modal.component';
 import { CreateWorkerModalComponent } from '../modals/create-worker-modal/create-worker-modal.component';
 import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
+import { CommonService } from '../shared/common.service';
+import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal.component';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -36,6 +38,7 @@ export class ManagerWorkboardComponent implements OnInit {
   constructor(
     private router: Router,
     private managerService: ManagerService,
+    private commonService: CommonService,
     private authService: AuthService,
     private modalService: MdbModalService
   ) {}
@@ -77,6 +80,38 @@ export class ManagerWorkboardComponent implements OnInit {
       //use method when promise resolved
 
       this.workerData = workers ?? []; // if workers is null or undefined,  assign []
+    });
+  }
+  getImageKeysFromJob(jobID: string): Observable<any> {
+    return this.commonService.getImageKeysForJob(jobID).pipe(
+      map((keys: any) => {
+        let keysList = new Array<string>(keys.length);
+        for (let i = 0; i < keys.length; i++) {
+          keysList[i] =
+            'http://localhost:8888/api/images/images/' + keys[i].image_key;
+        }
+        console.log(keysList);
+        return keysList;
+      }),
+      catchError((val) => of(`I caught: ${val}`))
+    );
+  }
+  openImagesModal(jobData: Job) {
+    this.getImageKeysFromJob(jobData.jobID).subscribe((keyList: string[]) => {
+      console.log(keyList);
+      const modalOptions = {
+        modalClass: 'modal-dialog-scrollable',
+        data: {
+          Job: jobData,
+          imageList: keyList,
+        },
+      };
+
+      console.log('this should be second to keys');
+      this.modalRef = this.modalService.open(
+        viewJobImagesModalComponent,
+        modalOptions
+      );
     });
   }
 

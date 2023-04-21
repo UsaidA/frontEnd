@@ -1,5 +1,4 @@
 
-
 <body style="background-color:rgb(232, 232, 232);">
     <div class="container-xl px-4 mt-4">
         <!-- Account page navigation-->
@@ -73,12 +72,15 @@
                         <thead>
                             <tr>
                                 <th>Job Name</th>
+                                <th>Job Address</th>
                                 <th>Job Description</th>
-                                
+                               
+                               
                                 
                                 <th>image Edit</th>
-                                <th>Upload Image</th>
                                 <th>Job Travel</th>
+                                <th>Upload Image</th>
+                                
                                 <th>Job Complete</th>
                                 
                             </tr>
@@ -87,13 +89,19 @@
                         <tbody>
                             <tr *ngFor = "let job of jData">
                                 <td> {{job.name}}</td>
-                                <td> {{job.description}}</td>
-                                <td><button class="btn btn-primary" (click)="openModal(job)">Open modal</button></td>
-                                <td><form enctype="multipart/form-data">
+                                <td> {{job.address}}</td>
+                                <td > {{job.description}}</td>
+                                
+                                
+                                
+                               
+                                <td><button class="btn btn-primary " (click)="openImagesModal(job)">View</button></td>
+                                <td ><button class="btn btn-primary" (click)="openTravelModal(job)">Travel</button></td>
+
+                                <td ><form  class = "upload-image-cell"  enctype="multipart/form-data">
                                     <input type="file" (change)="onFileSelected($event, job)" />
                                   </form>
                                 </td>
-                                <td><button class="btn btn-primary" (click)="openTravelModal(job)">Open modal</button></td>
                                 <td> <input type = "checkbox" [(ngModel)]='job.completed' (change)="checkVal(job.jobID, job.name, job.description, job.completed? 'true':'false', job.address)"> </td>
                                 
 

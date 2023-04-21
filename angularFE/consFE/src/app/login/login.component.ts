@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
       .subscribe((response) => {
         if (response?.accessToken) {
           if(response.accessControl ===1){
+            console.log("Hi")
             this.router.navigate(['/managerBoard']);
           }else if(response.accessControl ===0){
             this.router.navigate(['workerBoard'])
@@ -50,12 +51,12 @@ export class LoginComponent implements OnInit {
     //sendLoginRequest(email,password)
   }
 
-  async loadManagerWorkboard() {
-    this.vcr.clear();
-    const { ManagerWorkboardComponent } = await import(
-      '../manager-workboard/manager-workboard.component'
-    );
-    //this.vcr.createComponent(this.cfr.resolveComponentFactory(ManagerWorkboardComponent));
-    this.router.navigate(['/managerBoard']);
-  }
+  // async loadManagerWorkboard() {
+  //   this.vcr.clear();
+  //   const { ManagerWorkboardComponent } = await import(
+  //     '../manager-workboard/manager-workboard.component'
+  //   );
+  //   //this.vcr.createComponent(this.cfr.resolveComponentFactory(ManagerWorkboardComponent));
+  //   this.router.navigate(['/managerBoard']);
+  // }
 }

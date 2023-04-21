@@ -10,6 +10,9 @@ export class TravelModalComponent {
   dtOptions: DataTables.Settings = {};
   allTravels: any[] = [];
   opener: any;
-  constructor(public modalRef: MdbModalRef<TravelModalComponent>) {}
+  travelStatus:any;
+  constructor(public modalRef: MdbModalRef<TravelModalComponent>) {
+  
+  }
 
 }
