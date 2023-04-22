@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
       next: (response: any) => {
         if (response?.accessToken) {
           if (response.accessControl === 1) {
-            console.log('Hi');
             this.router.navigate(['/managerBoard']);
           } else if (response.accessControl === 0) {
             this.router.navigate(['workerBoard']);

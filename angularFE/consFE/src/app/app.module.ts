@@ -24,6 +24,8 @@ import { KmConversionPipe } from './shared/km-conversion.pipe';
 import { WorkerDropdownComponent } from './worker-workboard/worker-dropdown/worker-dropdown.component';
 import { RegisterComponent } from './register/register.component';
 import { ManagerDropdownComponent } from './manager-workboard/manager-dropdown/manager-dropdown.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
 //import { WorkerDropdownComponent_1 as WorkerDropdownComponent } from "./worker-workboard/worker-dropdown/worker-dropdown.component";
 @NgModule({
     declarations: [
@@ -60,7 +62,9 @@ import { ManagerDropdownComponent } from './manager-workboard/manager-dropdown/m
         CarouselModule,
         BrowserAnimationsModule,
         WorkerDropdownComponent,
-        ManagerDropdownComponent
+        ManagerDropdownComponent,
+        MatSidenavModule,
+        MatButtonModule,
     ]
 })
 export class AppModule { }
