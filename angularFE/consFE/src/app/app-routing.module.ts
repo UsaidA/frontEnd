@@ -5,10 +5,12 @@ import { ManagerWorkboardComponent } from './manager-workboard/manager-workboard
 import { LoginGuardGuard } from './login.guard';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
 import { LoginWorkerGuard } from './loginWorker.guard';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
 {path: '', component: LoginComponent},
 {path: 'login', component:LoginComponent},
+{path:'register', component:RegisterComponent},
 {path: 'managerBoard', component:ManagerWorkboardComponent,canActivate: [LoginGuardGuard]},
 {path:'workerBoard', component:WorkerWorkboardComponent, canActivate:[LoginWorkerGuard]}
 ];

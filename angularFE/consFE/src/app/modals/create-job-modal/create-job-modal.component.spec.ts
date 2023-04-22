@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateJobModalComponent } from './modal.component';
+import { CreateJobModalComponent } from './create-job-modal.component';
 
 describe('ModalComponent', () => {
   let component: CreateJobModalComponent;

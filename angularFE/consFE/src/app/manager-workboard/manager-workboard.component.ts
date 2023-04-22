@@ -8,7 +8,7 @@ import { sendJobData } from 'src/services/services';
 import { ManagerService } from '../shared/manager.service';
 import { AuthService } from '../shared/auth.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
-import { CreateJobModalComponent } from '../modals/create-job-modal/modal.component';
+import { CreateJobModalComponent } from '../modals/create-job-modal/create-job-modal.component';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { AssignWorkersModalComponent } from '../modals/assign-workers-modal/assign-workers-modal.component';
 import { CreateWorkerModalComponent } from '../modals/create-worker-modal/create-worker-modal.component';
@@ -133,7 +133,7 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
   openWorkerCreationModal() {
-    this.modalRef = this.modalService.open(CreateJobModalComponent);
+    this.modalRef = this.modalService.open(CreateWorkerModalComponent);
 
     this.modalRef.onClose.subscribe((worker: any) => {
       if (worker) {
@@ -159,7 +159,7 @@ export class ManagerWorkboardComponent implements OnInit {
         modalClass: 'modal-dialog modal-xl',
         data: {
           allTravels: travels,
-          opener:1 // controlling the state of the travel Modal - 0 would indicate no datatable
+          opener:1 // controlling the state of the  Modal - 0 would indicate no datatable
         },
       };
       this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
@@ -272,12 +272,24 @@ export class ManagerWorkboardComponent implements OnInit {
       catchError((val) => of(`I caught: ${val}`))
     );
   }
-  confirmDelete(jobID:string, name:string, description:string,completed:string, address:string ){
+  confirmJobDelete(jobID:string, name:string, description:string,completed:string, address:string ){
     if (confirm("Are you sure you want to delete permanently?")) {
       // user clicked OK
       console.log("User confirmed deletion");
       this.managerService.deleteJob(jobID,name,description,completed,address).subscribe(()=>{
         this.getJobData();
+      })
+    } else {
+      // user clicked Cancel
+      console.log("User canceled deletion");
+    }
+  }
+  confirmWorkerDelete(workerID: string){
+    if (confirm("Are you sure you want to delete permanently?")) {
+      // user clicked OK
+      console.log("User confirmed deletion");
+      this.managerService.deleteWorker(workerID).subscribe(()=>{
+        this.getWorkerData();
       })
     } else {
       // user clicked Cancel

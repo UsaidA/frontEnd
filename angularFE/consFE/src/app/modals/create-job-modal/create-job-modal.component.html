@@ -12,11 +12,12 @@
     <input type="email" id="jobName" class="form-control form-control-lg"  #jobName/>
     <label class="form-label" for="typeEmailX">Job Description</label>
     <input type="email" id="description" class="form-control form-control-lg"  #jobDescription/>
-    <label class="form-label" for="typeEmailX">Job Address</label>
+    <label class="form-label" for="typeEmailX">Job Post-Code</label>
     <input type="email" id="jobName" class="form-control form-control-lg"  #jobAddress/>
     
 </div>
   <div class="modal-footer">
+    <div #errorMessage class="error-message">Invalid Postcode</div>
     <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
       Close
     </button>

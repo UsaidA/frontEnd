@@ -11,7 +11,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/authconfig.interceptor';
-import { CreateJobModalComponent } from './modals/create-job-modal/modal.component';
+import { CreateJobModalComponent } from './modals/create-job-modal/create-job-modal.component';
 import { MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { WorkerWorkboardComponent } from './worker-workboard/worker-workboard.component';
 import { viewJobImagesModalComponent } from './modals/images-modal/images-modal.component';
@@ -21,6 +21,7 @@ import { TravelModalComponent } from './modals/travel-modal/travel-modal.compone
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KmConversionPipe } from './shared/km-conversion.pipe';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { KmConversionPipe } from './shared/km-conversion.pipe';
     AssignWorkersModalComponent,
     CreateJobModalComponent,
     TravelModalComponent,
-    KmConversionPipe
+    KmConversionPipe,
+    RegisterComponent
     
     
    

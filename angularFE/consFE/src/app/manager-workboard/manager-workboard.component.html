@@ -85,7 +85,7 @@
                                 <td> {{job.description}}</td>
                                 <td> <button class="btn btn-primary" (click)="openAssignModal(job)">Assign</button></td>
                                 <td><button class="btn btn-primary" (click)="openImagesModal(job)">View</button></td>
-                                <td><button class = "btn btn-danger" (click)="confirmDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
+                                <td><button class = "btn btn-danger" (click)="confirmJobDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -102,9 +102,10 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>email</th>
+                                    <th>Email</th>
                                     <th>House Address</th>
                                     <th>Travel History</th>
+                                    <th>Delete Worker</th>
                                     
                                     
                                 </tr>
@@ -116,6 +117,7 @@
                                     <td> {{worker.email}}</td>
                                     <td>  {{worker.address}}</td>
                                     <td> <button class="btn btn-primary" (click)="openWorkersTravelHistoryModal(worker.workerID)">Open History</button></td>
+                                    <td><button class = "btn btn-danger" (click)="confirmWorkerDelete(worker.workerID)"></button></td>
                                 </tr>
                             </tbody>
                         </table>
