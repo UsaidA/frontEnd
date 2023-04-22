@@ -11,7 +11,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 export class WorkerDropdownComponent {
   @Output() viewImageClicked = new EventEmitter<void>();
   @Output() openTravelModalClicked = new EventEmitter<void>();
-  @Output() uploadImageModalClicked = new EventEmitter<void>();
 
   viewImageClick() {
     this.viewImageClicked.emit();
@@ -21,7 +20,4 @@ export class WorkerDropdownComponent {
     this.openTravelModalClicked.emit();
   }
 
-  uploadImageModal(){
-    this.uploadImageModalClicked.emit();
-  }
 }
