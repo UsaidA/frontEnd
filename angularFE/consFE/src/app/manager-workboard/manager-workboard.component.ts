@@ -100,7 +100,7 @@ export class ManagerWorkboardComponent implements OnInit {
     this.getImageKeysFromJob(jobData.jobID).subscribe((keyList: string[]) => {
       console.log(keyList);
       const modalOptions = {
-        modalClass: 'modal-dialog-scrollable',
+        modalClass: 'modal-xl',
         data: {
           Job: jobData,
           imageList: keyList,
