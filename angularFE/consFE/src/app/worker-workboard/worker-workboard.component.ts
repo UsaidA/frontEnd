@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal.component';
@@ -23,7 +23,9 @@ export class WorkerWorkboardComponent {
   lastName = '';
   email = '';
   workerAddress = '';
-  
+  @Output() viewImageClicked = new EventEmitter<void>();
+  @Output() openTravelModalClicked = new EventEmitter<void>();
+  @Output() uploadImageModalClicked = new EventEmitter<void>();
 
   public jData: Job[] = [];
  
