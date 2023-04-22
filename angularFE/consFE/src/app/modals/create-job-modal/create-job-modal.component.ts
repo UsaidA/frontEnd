@@ -46,6 +46,7 @@ export class CreateJobModalComponent {
         .isValidPostcode(jobAddress.value)
         .subscribe((response: any) => {
           if (response.status === 'OK') {
+            
             if (this.openType === 'update') {
               console.log(jobDes.value)
               const jobT = new Job(

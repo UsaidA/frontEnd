@@ -1,13 +1,24 @@
 <div class="row">
 	<div class="col">
+
+
 		<div ngbDropdown class="d-inline-block">
 			<button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-				Job Options
+				Options
 			</button>
 			<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-				<button (click)="viewImageClick()" ngbDropdownItem>View Images</button>
-				<button (click)="openAssignWorkerClick()" ngbDropdownItem>Assign Workers</button>
-                <button (click)="openEditJobClick()" ngbDropdownItem>Edit Job</button>
+				<button *ngIf="isJob" (click)="viewImageClick()" ngbDropdownItem>View Images</button>
+				<button *ngIf="isJob" (click)="openAssignWorkerClick()" ngbDropdownItem>Assign Workers</button>
+                <button *ngIf="isJob" (click)="openEditJobClick()" ngbDropdownItem>Edit Job</button>
+
+
+                <button *ngIf="!isJob" (click)="openTravelHistoryModalClick()" ngbDropdownItem>See History</button>
+                <button *ngIf="!isJob" (click)="openEditWorkerClick()" ngbDropdownItem>Edit Worker</button>
 			</div>
 		</div>
+
+
+
+        
 	</div>
+</div>

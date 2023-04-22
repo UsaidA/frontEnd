@@ -58,6 +58,7 @@ export class ManagerWorkboardComponent implements OnInit {
     };
   }
 
+
   getJobData() {
     this.managerService.getJobs().subscribe((jobs: any) => {
       //use method when promise resolved
@@ -172,9 +173,36 @@ export class ManagerWorkboardComponent implements OnInit {
       }
     });
   }
+  openWorkerUpdateModal(worker:Worker) {
+   console.log("this isn't a test")
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+        worker: worker,
+        openType: "update"
+      },
+    };
+    this.modalRef = this.modalService.open(CreateWorkerModalComponent, modalOptions);
+
+    this.modalRef.onClose.subscribe((worker: any) => {
+      if (worker) {
+        var x: Worker = JSON.parse(worker);
+
+        this.managerService
+          .updateWorker(x.workerID, x.firstName, x.lastName, x.address, x.email) 
+          .subscribe((res: any) => {
+
+            this.getWorkerData();
+          });
+      } else {
+      }
+    });
+  }
+ 
  
 
   openWorkersTravelHistoryModal(workerID:string) {
+  
     this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
       if (res[0]){ //if res isn't undefined
         console.log(res)

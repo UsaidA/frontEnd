@@ -110,6 +110,14 @@ export class ManagerService {
     return Observable;
 
   }
+  updateWorker(workerID:string, firstName: string, lastName:string, address:string, email:string){
+    const Observable = this.http.put<any>(
+      `${this.endpoint}/workers/updateWorker`,
+      { workerID, firstName, lastName, address, email }
+    );
+    return Observable;
+
+  }
 
   postJwmapping(workerID: string, jobID: string) {
     console.log({ workerID, jobID });

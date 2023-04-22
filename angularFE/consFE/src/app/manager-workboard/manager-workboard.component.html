@@ -84,9 +84,10 @@
                             <tr *ngFor = "let job of jData">
                                 <td> {{job.name}}</td>
                                 <td> {{job.description}}</td>
-                                <td><app-manager-dropdown (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)"></app-manager-dropdown></td> 
+                                <td><app-manager-dropdown [isJob]="true" (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)"></app-manager-dropdown> </td>
+                               
+                                
                                 <td><button class = "btn btn-danger" (click)="confirmJobDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
-                                <!-- <td><button class = "btn btn-danger" (click)="openJobUpdateModal(job)"></button></td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -105,8 +106,9 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>House Address</th>
-                                    <th>Travel History</th>
+                                    <th>Worker Options</th>
                                     <th>Delete Worker</th>
+                                    
                       
                                     
                                     
@@ -118,9 +120,10 @@
                                     <td> {{worker.firstName}} {{worker.lastName}}</td>
                                     <td> {{worker.email}}</td>
                                     <td>  {{worker.address}}</td>
-                                    <td> <button class="btn btn-primary" (click)="openWorkersTravelHistoryModal(worker.workerID)">Open History</button></td>
+                                    <td><app-manager-dropdown [isJob]="false" (openTravelModalClicked)="openWorkersTravelHistoryModal(worker.workerID)" (openEditWorkerClicked)="openWorkerUpdateModal(worker)"></app-manager-dropdown> </td>
                                     <td><button class = "btn btn-danger" (click)="confirmWorkerDelete(worker.workerID)"></button></td>
-                                     </tr>
+                                    
+                                </tr>
                             </tbody>
                         </table>
                     </div>
