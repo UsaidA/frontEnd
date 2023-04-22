@@ -10,13 +10,25 @@ import { AuthService } from '../shared/auth.service';
 })
 export class RegisterComponent implements OnInit {
   @Input() errorType: string = '';
+  @Input() success: string = "Success!";
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
+  @ViewChild('successMessage') successMessageRef!: ElementRef;
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {}
 
   showError(): void {
     const errorMessageElement = this.errorMessageRef.nativeElement;
+    errorMessageElement.classList.remove('hide');
+    errorMessageElement.classList.add('show');
+
+    setTimeout(() => {
+      errorMessageElement.classList.add('hide');
+      errorMessageElement.classList.remove('show');
+    }, 3000);
+  }
+  showSuccess(): void {
+    const errorMessageElement = this.successMessageRef.nativeElement;
     errorMessageElement.classList.remove('hide');
     errorMessageElement.classList.add('show');
 
@@ -38,6 +50,7 @@ export class RegisterComponent implements OnInit {
     if (this.passMatch(password.value, repeatPass.value)) {
       this.authService.register(email.value, password.value).subscribe({
         next: (res: any) => {
+          this.showSuccess()
           console.log(res);
         },
         error: (err: any) => {

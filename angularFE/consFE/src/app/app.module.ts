@@ -22,8 +22,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KmConversionPipe } from './shared/km-conversion.pipe';
 import { RegisterComponent } from './register/register.component';
-
-
 @NgModule({
   declarations: [
     AppComponent,
