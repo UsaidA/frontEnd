@@ -21,8 +21,10 @@ import { TravelModalComponent } from './modals/travel-modal/travel-modal.compone
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KmConversionPipe } from './shared/km-conversion.pipe';
-import { WorkerDropdownComponent } from './worker-dropdown/worker-dropdown.component';
+import { WorkerDropdownComponent } from './worker-workboard/worker-dropdown/worker-dropdown.component';
 import { RegisterComponent } from './register/register.component';
+import { ManagerDropdownComponent } from './manager-workboard/manager-dropdown/manager-dropdown.component';
+//import { WorkerDropdownComponent_1 as WorkerDropdownComponent } from "./worker-workboard/worker-dropdown/worker-dropdown.component";
 @NgModule({
     declarations: [
         AppComponent,
@@ -36,7 +38,7 @@ import { RegisterComponent } from './register/register.component';
         CreateJobModalComponent,
         TravelModalComponent,
         KmConversionPipe,
-    RegisterComponent,
+        RegisterComponent
     ],
     providers: [
         {
@@ -57,7 +59,8 @@ import { RegisterComponent } from './register/register.component';
         HttpClientModule,
         CarouselModule,
         BrowserAnimationsModule,
-        WorkerDropdownComponent
+        WorkerDropdownComponent,
+        ManagerDropdownComponent
     ]
 })
 export class AppModule { }

@@ -9,7 +9,8 @@ import { ManagerService } from '../../shared/manager.service';
   styleUrls: ['./create-job-modal.component.scss'],
 })
 export class CreateJobModalComponent {
-
+  job: Job = new Job("","","","","");
+  openType: any;
 
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   constructor(
@@ -25,7 +26,7 @@ export class CreateJobModalComponent {
     const errorMessageElement = this.errorMessageRef.nativeElement;
     errorMessageElement.classList.remove('hide');
     errorMessageElement.classList.add('show');
-  
+
     setTimeout(() => {
       errorMessageElement.classList.add('hide');
       errorMessageElement.classList.remove('show');
@@ -40,30 +41,38 @@ export class CreateJobModalComponent {
     if (regex.test(jobAddress.value)) {
       //this.errorMessage = "";
       this.showError();
-      
+
       this.managerService
         .isValidPostcode(jobAddress.value)
         .subscribe((response: any) => {
-          
-
-            if (response.status=== 'OK') {
-              console.log('inside saveJob');
-              const job = new Job(
+          if (response.status === 'OK') {
+            if (this.openType === 'update') {
+              console.log(jobDes.value)
+              const jobT = new Job(
+                this.job.jobID,
+                jobName.value,
+                jobDes.value,
+                this.job.completed,
+                jobAddress.value
+              );
+              const JSONOBJ = JSON.stringify(jobT);
+              this.modalRef.close(JSONOBJ);
+            } else {
+              const jobT = new Job(
                 '',
                 jobName.value,
                 jobDes.value,
                 '0',
                 jobAddress.value
               );
-              const JSONOBJ = JSON.stringify(job);
-
+              const JSONOBJ = JSON.stringify(jobT);
               this.modalRef.close(JSONOBJ);
-            } else {
-              this.showError();
-              //this.errorMessage = "Invalid Postcode";
-              console.log('invalid postcode');
             }
-          
+          } else {
+            this.showError();
+            //this.errorMessage = "Invalid Postcode";
+            console.log('invalid postcode');
+          }
         });
     } else {
       this.showError();

@@ -55,6 +55,22 @@ export class ManagerService {
     );
     return Observable;
   }
+
+  updateJob(
+    jobID: string,
+    name: string,
+    description: string,
+    completed: string,
+    address: string
+  ) {
+    console.log({jobID, name, description, completed, address });
+
+    const Observable = this.http.put<any>(
+      `${this.endpoint}/jobs/updateJob`,
+      {jobID, name, description, completed, address }
+    );
+    return Observable;
+  }
   deleteJob(jobID:string, name:string, description:string,completed:string, address:string ){
     console.log({ jobID, name,description,completed,address });
     let params = {

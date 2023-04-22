@@ -9,11 +9,11 @@
   </div>
   <div class="form-outline form-white mb-4 form-group">
     <label class="form-label" for="typeEmailX">Job Name</label>
-    <input type="email" id="jobName" class="form-control form-control-lg"  #jobName/>
-    <label class="form-label" for="typeEmailX">Job Description</label>
-    <input type="email" id="description" class="form-control form-control-lg"  #jobDescription/>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #jobName value = {{job.name}}/>
+    <label class="form-label" for="typeEmailX">Job Description </label>
+    <input type="email" id="description" class="form-control form-control-lg"  #jobDescription value = {{job.description}}/>
     <label class="form-label" for="typeEmailX">Job Post-Code</label>
-    <input type="email" id="jobName" class="form-control form-control-lg"  #jobAddress/>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #jobAddress value = {{job.address}}/>
     
 </div>
   <div class="modal-footer">
@@ -21,5 +21,5 @@
     <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
       Close
     </button>
-    <button type="submit" class="btn btn-primary" (click)="saveJob(jobName,jobDescription,jobAddress)">Create Job</button> 
+    <button type="submit" class="btn btn-primary" (click)="saveJob(jobName,jobDescription,jobAddress)">Submit</button> 
   </div>

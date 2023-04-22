@@ -115,7 +115,7 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
 
-  openModal() {
+  openJobCreationModal() {
     this.modalRef = this.modalService.open(CreateJobModalComponent, {
       data: { title: 'Job Details' },
     });
@@ -125,6 +125,29 @@ export class ManagerWorkboardComponent implements OnInit {
         var x: Job = JSON.parse(message);
         this.managerService
           .postJob(x.name, x.description, x.completed, x.address)
+          .subscribe((res: any) => {
+            this.getJobData();
+          });
+      } else {
+      }
+    });
+  }
+  openJobUpdateModal(job: Job) {
+
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+        job: job,
+        openType: "update"
+      },
+    };
+    this.modalRef = this.modalService.open(CreateJobModalComponent,modalOptions);
+
+    this.modalRef.onClose.subscribe((message: any) => {
+      if (message) {
+        var x: Job = JSON.parse(message);
+        this.managerService
+          .updateJob(x.jobID, x.name, x.description, x.completed, x.address)
           .subscribe((res: any) => {
             this.getJobData();
           });
@@ -149,6 +172,7 @@ export class ManagerWorkboardComponent implements OnInit {
       }
     });
   }
+ 
 
   openWorkersTravelHistoryModal(workerID:string) {
     this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
