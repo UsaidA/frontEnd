@@ -3,6 +3,9 @@ import {
   OnInit,
   ViewContainerRef,
   ComponentFactoryResolver,
+  ViewChild,
+  ElementRef,
+  Input,
 } from '@angular/core';
 import axios from 'axios';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -17,6 +20,8 @@ import { AuthService } from '../shared/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @Input() errorType: string = '';
+  @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl(''),
@@ -33,30 +38,39 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   Login(email: any, password: any) {
-    this.authService
-      .signIn(email.value, password.value)
-      .subscribe((response) => {
+    this.authService.signIn(email.value, password.value).subscribe({
+      next: (response: any) => {
         if (response?.accessToken) {
-          if(response.accessControl ===1){
-            console.log("Hi")
+          if (response.accessControl === 1) {
+            console.log('Hi');
             this.router.navigate(['/managerBoard']);
-          }else if(response.accessControl ===0){
-            this.router.navigate(['workerBoard'])
+          } else if (response.accessControl === 0) {
+            this.router.navigate(['workerBoard']);
           }
-          
         } else {
           this.loginText = 'Invalid Credentials';
         }
-      });
-    //sendLoginRequest(email,password)
+
+        console.log(response);
+      },
+      error: (err: any) => {
+        
+          this.errorType = 'Email or password failed';
+          this.showError();
+       
+      },
+    });
   }
 
-  // async loadManagerWorkboard() {
-  //   this.vcr.clear();
-  //   const { ManagerWorkboardComponent } = await import(
-  //     '../manager-workboard/manager-workboard.component'
-  //   );
-  //   //this.vcr.createComponent(this.cfr.resolveComponentFactory(ManagerWorkboardComponent));
-  //   this.router.navigate(['/managerBoard']);
-  // }
+
+  showError(): void {
+    const errorMessageElement = this.errorMessageRef.nativeElement;
+    errorMessageElement.classList.remove('hide');
+    errorMessageElement.classList.add('show');
+
+    setTimeout(() => {
+      errorMessageElement.classList.add('hide');
+      errorMessageElement.classList.remove('show');
+    }, 3000);
+  }
 }
