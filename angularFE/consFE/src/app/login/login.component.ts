@@ -48,15 +48,8 @@ export class LoginComponent implements OnInit {
           this.loginText = 'Invalid Credentials';
         }
       });
-    //sendLoginRequest(email,password)
+ 
   }
 
-  // async loadManagerWorkboard() {
-  //   this.vcr.clear();
-  //   const { ManagerWorkboardComponent } = await import(
-  //     '../manager-workboard/manager-workboard.component'
-  //   );
-  //   //this.vcr.createComponent(this.cfr.resolveComponentFactory(ManagerWorkboardComponent));
-  //   this.router.navigate(['/managerBoard']);
-  // }
+
 }
