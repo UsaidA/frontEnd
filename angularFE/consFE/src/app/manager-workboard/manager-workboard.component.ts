@@ -22,6 +22,11 @@ import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal
   styleUrls: ['./manager-workboard.component.scss'],
 })
 export class ManagerWorkboardComponent implements OnInit {
+  opened = true;
+
+  toggleSidebar() {
+    this.opened = !this.opened;
+  }
   dtTrigger: Subject<any> = new Subject();
   modalRef: MdbModalRef<CreateJobModalComponent> | null = null;
   firstName = '';

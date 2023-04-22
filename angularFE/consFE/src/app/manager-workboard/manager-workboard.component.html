@@ -1,139 +1,86 @@
-<body style="background-color:rgb(232, 232, 232);">
-    <div class="container-xl px-4 mt-4">
-        <!-- Account page navigation-->
-        <!-- <nav class="nav nav-borders">
-            <nav class="nav nav-borders">
-                <a routerLink = "/dashboard" class="nav-link active ms-0" >Profile</a>
-                <a routerLink = "/reports" class="nav-link" >Reports</a>
-                
-            </nav>
-            
-            
-            
-        </nav> -->
-        <hr class="mt-0 mb-4">
-        <div class="row">
-            <div class="col-xl-4">
-                <!-- Profile picture card-->
-                <div class="card mb-4 mb-xl-0">
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+      <h2>Manager Details</h2>
+      <ul>
+        <label class="small mb-1" for="inputFirstName">First name: {{firstName}}</label>
+        <label class="small mb-1" for="inputLastName">Last name: {{lastName}}</label>
+        <label class="small mb-1" for="inputEmailAddress">Email: {{email}}</label>
+        <br>
+        <button class="btn btn-primary" style="color: rgb(255, 255, 255); background-color: rgb(18, 19, 43); border-radius: 4px; font-weight: 700;" type="button" (click) = "LogOut()">Log Out</button>
+      </ul>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <button mat-raised-button (click)="toggleSidebar()" color="primary">
+        Toggle Sidebar
+      </button>
+      <div class="col-xl-12">
     
-                    <div class="card mb-4">
-                   
-                        <div class="card-header">Manager Details</div>
-                        <div class="card-body">
-                            <form>
-                               
-                                <!-- Form Row-->
-                                <div class="row gx-3 mb-3">
-                                    <!-- Form Group (first name)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputFirstName">First name: {{firstName}}</label>
-                                        
-                                    </div>
-                                    <!-- Form Group (last name)-->
-                                    <div class="col-md-6">
-                                        <label class="small mb-1" for="inputLastName">Last name: {{lastName}}</label>
-                                        
-                                    </div>
-                                </div>
-                                <!-- Form Row        -->
-                               
-                                <!-- Form Group (email address)-->
-                                <div class="mb-3">
-                                    <label class="small mb-1" for="inputEmailAddress">Email address: {{email}}</label>
-                                    
-                                </div>
-    
-                                
-                                <!-- Form Row-->
-                                <div class="row gx-3 mb-3">
-                                  
-        
-        
-        
-        
-        
-                                   
-                                </div>
-                                <!-- Save changes button-->
-                                <button class="btn btn-primary" style="color: rgb(255, 255, 255); background-color: rgb(18, 19, 43); border-radius: 4px; font-weight: 700;" type="button" (click) = "LogOut()">Log Out</button>
-                            </form>
-                        </div>
-                    </div>
+        <div class =" card mb-4 p-2">
+            <button class="btn btn-primary" (click)="openJobCreationModal()">Create Job</button>
+            <table *ngIf="jData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                <thead>
+                    <tr>
+                        <th>Job Name</th>
+                        <th>Job Description</th>
+                        <th>Job Options</th>
+                        <th>Delete Job</th>
+                        <!-- <th>edit</th> -->
+                        
+                    </tr>
                     
-                    
-                </div>
-            </div>
-            <div class="col-xl-8">
-    
-                <div class =" card mb-4">
-                    <button class="btn btn-primary" (click)="openJobCreationModal()">Create Job</button>
-                    <table *ngIf="jData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
-                        <thead>
-                            <tr>
-                                <th>Job Name</th>
-                                <th>Job Description</th>
-                                <th>Job Options</th>
-                                <th>Delete Job</th>
-                                <!-- <th>edit</th> -->
-                                
-                            </tr>
-                            
-                        </thead>
-                        <tbody>
-                            <tr *ngFor = "let job of jData">
-                                <td> {{job.name}}</td>
-                                <td> {{job.description}}</td>
-                                <td><app-manager-dropdown [isJob]="true" (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)"></app-manager-dropdown> </td>
-                               
-                                
-                                <td><button class = "btn btn-danger" (click)="confirmJobDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-               
-
-                &nbsp;
-                <div class = "card mb-4">
-                    <button class="btn btn-primary" (click)="openWorkerCreationModal()">Create Worker</button>
-                    <div>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let job of jData">
+                        <td> {{job.name}}</td>
+                        <td> {{job.description}}</td>
+                        <td><app-manager-dropdown [isJob]="true" (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)"></app-manager-dropdown> </td>
                        
-                        <table *ngIf="workerData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>House Address</th>
-                                    <th>Worker Options</th>
-                                    <th>Delete Worker</th>
-                                    
-                      
-                                    
-                                    
-                                </tr>
-                                
-                            </thead>
-                            <tbody>
-                                <tr *ngFor = "let worker of workerData">
-                                    <td> {{worker.firstName}} {{worker.lastName}}</td>
-                                    <td> {{worker.email}}</td>
-                                    <td>  {{worker.address}}</td>
-                                    <td><app-manager-dropdown [isJob]="false" (openTravelModalClicked)="openWorkersTravelHistoryModal(worker.workerID)" (openEditWorkerClicked)="openWorkerUpdateModal(worker)"></app-manager-dropdown> </td>
-                                    <td><button class = "btn btn-danger" (click)="confirmWorkerDelete(worker.workerID)"></button></td>
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
-                <!-- Account details card-->
-                
+                        
+                        <td><button class = "btn btn-danger" (click)="confirmJobDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+       
+
+        &nbsp;
+        <div class = "card mb-4 p-2">
+            <button class="btn btn-primary" (click)="openWorkerCreationModal()">Create Worker</button>
+            <div>
+               
+                <table *ngIf="workerData.length > 0" class = "table table-striped table-bordered table-sm row-border hover" datatable [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>House Address</th>
+                            <th>Worker Options</th>
+                            <th>Delete Worker</th>
+                            
+              
+                            
+                            
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let worker of workerData">
+                            <td> {{worker.firstName}} {{worker.lastName}}</td>
+                            <td> {{worker.email}}</td>
+                            <td>  {{worker.address}}</td>
+                            <td><app-manager-dropdown [isJob]="false" (openTravelModalClicked)="openWorkersTravelHistoryModal(worker.workerID)" (openEditWorkerClicked)="openWorkerUpdateModal(worker)"></app-manager-dropdown> </td>
+                            <td><button class = "btn btn-danger" (click)="confirmWorkerDelete(worker.workerID)"></button></td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-    
             
         </div>
+        <!-- Account details card-->
+        
     </div>
-    </body>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
