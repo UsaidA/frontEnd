@@ -21,45 +21,43 @@ import { TravelModalComponent } from './modals/travel-modal/travel-modal.compone
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KmConversionPipe } from './shared/km-conversion.pipe';
+import { WorkerDropdownComponent } from './worker-dropdown/worker-dropdown.component';
 import { RegisterComponent } from './register/register.component';
 @NgModule({
-  declarations: [
-    AppComponent,
-    TopBarComponent,
-    LoginComponent,
-    ManagerWorkboardComponent,
-    CreateJobModalComponent,
-    WorkerWorkboardComponent,
-    viewJobImagesModalComponent,
-    AssignWorkersModalComponent,
-    CreateJobModalComponent,
-    TravelModalComponent,
-    KmConversionPipe,
-    RegisterComponent
-    
-    
-   
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    DataTablesModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    CarouselModule,
-    BrowserAnimationsModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-      
-    },
-    MdbModalService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        TopBarComponent,
+        LoginComponent,
+        ManagerWorkboardComponent,
+        CreateJobModalComponent,
+        WorkerWorkboardComponent,
+        viewJobImagesModalComponent,
+        AssignWorkersModalComponent,
+        CreateJobModalComponent,
+        TravelModalComponent,
+        KmConversionPipe,
+    RegisterComponent,
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
+        MdbModalService
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        DataTablesModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        CarouselModule,
+        BrowserAnimationsModule,
+        WorkerDropdownComponent
+    ]
 })
 export class AppModule { }
