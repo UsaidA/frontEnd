@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { rootUrl } from 'src/services/APIs';
 import { accessControlKey, jwtTokenKey } from 'src/services/itemsKeys';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -34,19 +34,25 @@ export class AuthService {
     });
     return Observable;
   }
+  register(email: string, password: string) {
+    return this.http.post<any>(`${this.endpoint}/register`, {
+      email,
+      password,
+    }).pipe(
+      map((res: any) => {
+        console.log(res);
+        return res || null;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return this.handleError(error);
+      })
+    );
+  }
 
   getToken() {
     return localStorage.getItem(jwtTokenKey);
   }
-  // get isLooggedIn(): boolean {
-  //   let authToken = localStorage.getItem(jwtTokenKey);
-  //   let accessControl = localStorage.getItem(accessControlKey);
-  //   if (authToken !== null && accessControl === '1') {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+
   get isLoggedIn(): Observable<boolean> {
     return new Observable(observer => {
       let authToken = localStorage.getItem(jwtTokenKey);
@@ -74,5 +80,18 @@ export class AuthService {
     if (removeToken == null) {
       this.router.navigate(['login']);
     }
+  }
+
+  handleError(error: HttpErrorResponse) {
+    let msg = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      msg = error.error.message;
+    } else {
+      // server-side error
+      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
+     
+    }
+    return throwError(()=>error);
   }
 }

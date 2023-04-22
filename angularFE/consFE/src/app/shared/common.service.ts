@@ -29,6 +29,8 @@ export class CommonService {
     );
   }
 
+
+
   deleteImageFromJob(imageKey:string){
     let api = `${this.endpoint}/images/deleteImageFromJob`;
     let params = {imageKey: imageKey}
