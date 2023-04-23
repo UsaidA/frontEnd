@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import axios from 'axios';
 import { Registration } from '../../classes';
 import { AuthService } from '../shared/auth.service';
+import { ShowErrorMessageService } from '../shared/show-error-message.service';
 
 @Component({
   selector: 'app-register',
@@ -13,20 +14,10 @@ export class RegisterComponent implements OnInit {
   @Input() success: string = "Success!";
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   @ViewChild('successMessage') successMessageRef!: ElementRef;
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private displayErrorMessage: ShowErrorMessageService) {}
 
   ngOnInit(): void {}
 
-  showError(): void {
-    const errorMessageElement = this.errorMessageRef.nativeElement;
-    errorMessageElement.classList.remove('hide');
-    errorMessageElement.classList.add('show');
-
-    setTimeout(() => {
-      errorMessageElement.classList.add('hide');
-      errorMessageElement.classList.remove('show');
-    }, 3000);
-  }
   showSuccess(): void {
     const errorMessageElement = this.successMessageRef.nativeElement;
     errorMessageElement.classList.remove('hide');
@@ -57,10 +48,10 @@ export class RegisterComponent implements OnInit {
 
           if(err.status ===404){
             this.errorType = "Worker Doesn't Exist";
-            this.showError();
+            this.displayErrorMessage.showError();
           }else if(err.status ===500){
             this.errorType = "Worker Already Exists";
-            this.showError();
+            this.displayErrorMessage.showError();
           }
          
         },
@@ -68,7 +59,7 @@ export class RegisterComponent implements OnInit {
     } else {
       console.log('passwords must match');
       this.errorType = 'Passwords must match';
-      this.showError();
+      this.displayErrorMessage.showError();
     }
   }
 }

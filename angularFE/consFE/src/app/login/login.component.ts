@@ -13,6 +13,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { NavigationExtras } from '@angular/router';
 import { JsonPipe } from '@angular/common';
 import { AuthService } from '../shared/auth.service';
+import { ShowErrorMessageService } from '../shared/show-error-message.service';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
     public router: Router,
     private vcr: ViewContainerRef,
     private cfr: ComponentFactoryResolver,
-    private authService: AuthService
+    private authService: AuthService,
+    private showErrorMessage: ShowErrorMessageService
   ) {}
 
   loginText = '';
@@ -55,21 +57,8 @@ export class LoginComponent implements OnInit {
       error: (err: any) => {
         
           this.errorType = 'Email or password failed';
-          this.showError();
-       
+          this.showErrorMessage.showError();
       },
     });
-  }
-
-
-  showError(): void {
-    const errorMessageElement = this.errorMessageRef.nativeElement;
-    errorMessageElement.classList.remove('hide');
-    errorMessageElement.classList.add('show');
-
-    setTimeout(() => {
-      errorMessageElement.classList.add('hide');
-      errorMessageElement.classList.remove('show');
-    }, 3000);
   }
 }

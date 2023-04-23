@@ -2,6 +2,7 @@ import { ManagerService } from './../../shared/manager.service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { Worker } from 'src/classes';
+import { ShowErrorMessageService } from 'src/app/shared/show-error-message.service';
 
 @Component({
   selector: 'app-create-worker-modal',
@@ -14,22 +15,13 @@ export class CreateWorkerModalComponent {
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   constructor(
     public modalRef: MdbModalRef<CreateWorkerModalComponent>,
-    public managerService: ManagerService
+    public managerService: ManagerService,
+    private displayErrorMessage: ShowErrorMessageService
   ) {}
 
   close(): void {
     const closeMessage = 'Model closed';
     this.modalRef.close(closeMessage);
-  }
-  showError(): void {
-    const errorMessageElement = this.errorMessageRef.nativeElement;
-    errorMessageElement.classList.remove('hide');
-    errorMessageElement.classList.add('show');
-
-    setTimeout(() => {
-      errorMessageElement.classList.add('hide');
-      errorMessageElement.classList.remove('show');
-    }, 3000);
   }
 
   saveJob(firstName: any, lastName: any, address: any, email: any): void {
@@ -70,12 +62,12 @@ export class CreateWorkerModalComponent {
             }
           
           } else {
-            this.showError();
+            this.displayErrorMessage.showError();
             console.log('invalid postcode');
           }
         });
     } else {
-      this.showError();
+      this.displayErrorMessage.showError();
       console.log('bye');
     }
   }
