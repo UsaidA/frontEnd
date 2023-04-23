@@ -8,6 +8,7 @@ import { WorkerService } from '../shared/worker.service';
 import { AuthService } from '../shared/auth.service';
 import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
 import { CommonService } from '../shared/common.service';
+import { rootUrl } from 'src/services/APIs';
 
 @Component({
   selector: 'app-worker-workboard',
@@ -92,7 +93,7 @@ export class WorkerWorkboardComponent {
         let keysList = new Array<string>(keys.length);
         for (let i = 0; i < keys.length; i++) {
           keysList[i] =
-            'http://localhost:8888/api/images/images/' + keys[i].image_key;
+            rootUrl + '/images/images/' + keys[i].image_key;
         }
         console.log(keysList);
         return keysList;

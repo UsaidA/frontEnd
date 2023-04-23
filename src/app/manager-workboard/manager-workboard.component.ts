@@ -15,6 +15,7 @@ import { CreateWorkerModalComponent } from '../modals/create-worker-modal/create
 import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
 import { CommonService } from '../shared/common.service';
 import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal.component';
+import {  rootUrl } from 'src/services/APIs';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -89,12 +90,13 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
   getImageKeysFromJob(jobID: string): Observable<any> {
+  
     return this.commonService.getImageKeysForJob(jobID).pipe(
       map((keys: any) => {
         let keysList = new Array<string>(keys.length);
         for (let i = 0; i < keys.length; i++) {
           keysList[i] =
-            'http://localhost:8888/api/images/images/' + keys[i].image_key;
+            rootUrl +'/images/images/' + keys[i].image_key;
         }
         console.log(keysList);
         return keysList;

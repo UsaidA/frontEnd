@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpInterceptor, HttpRequest, HttpHandler } from "@angular/common/http";
+import { rootUrl } from 'src/services/APIs';
 import { AuthService } from "./auth.service";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -8,7 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
         const authToken = this.authService.getToken();
         if(authToken){
 
-            if(req.url.startsWith('http://localhost:8888')){
+            if(req.url.startsWith(rootUrl)){
                 req = req.clone({
                     setHeaders: {
                         Authorization: authToken
