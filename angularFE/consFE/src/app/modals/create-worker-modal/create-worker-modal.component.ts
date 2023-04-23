@@ -62,12 +62,12 @@ export class CreateWorkerModalComponent {
             }
           
           } else {
-            this.displayErrorMessage.showError();
+            this.displayErrorMessage.showError(this.errorMessageRef);
             console.log('invalid postcode');
           }
         });
     } else {
-      this.displayErrorMessage.showError();
+      this.displayErrorMessage.showError(this.errorMessageRef);
       console.log('bye');
     }
   }

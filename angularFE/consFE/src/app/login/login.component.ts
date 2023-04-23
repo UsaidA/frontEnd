@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       error: (err: any) => {
         
           this.errorType = 'Email or password failed';
-          this.showErrorMessage.showError();
+          this.showErrorMessage.showError(this.errorMessageRef);
       },
     });
   }

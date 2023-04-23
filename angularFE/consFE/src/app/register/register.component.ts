@@ -48,10 +48,10 @@ export class RegisterComponent implements OnInit {
 
           if(err.status ===404){
             this.errorType = "Worker Doesn't Exist";
-            this.displayErrorMessage.showError();
+            this.displayErrorMessage.showError(this.errorMessageRef);
           }else if(err.status ===500){
             this.errorType = "Worker Already Exists";
-            this.displayErrorMessage.showError();
+            this.displayErrorMessage.showError(this.errorMessageRef);
           }
          
         },
@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
     } else {
       console.log('passwords must match');
       this.errorType = 'Passwords must match';
-      this.displayErrorMessage.showError();
+      this.displayErrorMessage.showError(this.errorMessageRef);
     }
   }
 }

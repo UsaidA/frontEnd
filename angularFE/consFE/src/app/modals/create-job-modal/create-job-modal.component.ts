@@ -31,8 +31,7 @@ export class CreateJobModalComponent {
     );
 
     if (regex.test(jobAddress.value)) {
-      //this.errorMessage = "";
-      this.displayErrorMessage.showError();
+      this.displayErrorMessage.showError(this.errorMessageRef);
 
       this.managerService
         .isValidPostcode(jobAddress.value)
@@ -62,12 +61,12 @@ export class CreateJobModalComponent {
               this.modalRef.close(JSONOBJ);
             }
           } else {
-            this.displayErrorMessage.showError();
+            this.displayErrorMessage.showError(this.errorMessageRef);
             console.log('invalid postcode');
           }
         });
     } else {
-      this.displayErrorMessage.showError();
+      this.displayErrorMessage.showError(this.errorMessageRef);
     }
   }
 }
