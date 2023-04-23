@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Create Job</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+  </div>
+  <div class="form-outline form-white mb-4 form-group">
+    <label class="form-label" for="typeEmailX">First Name</label>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #firstName value = {{worker.firstName}} />
+    <label class="form-label" for="typeEmailX">Last Name</label>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #lastName value = {{worker.lastName}} />
+    <label class="form-label" for="typeEmailX">House Address</label>
+    <input type="email" id="description" class="form-control form-control-lg"  #address value = {{worker.address}}/>
+    <label class="form-label" for="typeEmailX">Email Address</label>
+    <input type="email" id="jobName" class="form-control form-control-lg"  #email value = {{worker.email}}/>
+    
+</div>
+  <div class="modal-footer">
+    <div #errorMessage class="error-message">Invalid Postcode</div>
+    <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+      Close
+    </button>
+    <button type="submit" class="btn btn-primary" (click)="saveJob(firstName,lastName,address,email)">Submit</button> 
+  </div>

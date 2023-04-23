@@ -1,0 +1,41 @@
+.error-message {
+    display: none;
+    color: rgba(255, 0, 0, 0.566);
+    font-weight: bold;
+  }
+
+  .success-message {
+    display: none;
+    color: rgba(9, 255, 0, 0.791);
+    font-weight: bold;
+  }
+  
+  .show {
+    display: block;
+    animation: fade-in 0.5s forwards;
+  }
+  
+  .hide {
+    animation: fade-out 0.5s forwards;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      display: none;
+    }
+  }
+
+ 

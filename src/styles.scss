@@ -1,0 +1,78 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* styles.css */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Roboto, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 250px;
+  box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f3f4f8;
+  color: #fff;
+}
+
+h2 {
+  margin: 10px 0;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(236, 222, 222, 0.1);
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+mat-sidenav-content {
+  padding: 20px;
+}
+
+button {
+  margin-bottom: 20px;
+}
+
+.sidebar {
+    width: 200px; // Adjust the width of the sidebar
+    padding: 16px;
+    background-color: #ffffff; // Adjust the background color of the sidebar
+  }
+  .image-placeholder {
+    width: 150px; // Adjust the width and height of the image placeholder
+    height: 150px;
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #ccc 75%),
+                      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px; // Adjust the size of the texture pattern
+    background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
+    border-radius: 50%; // Make the image placeholder round
+  }
+  

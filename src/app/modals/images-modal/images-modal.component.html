@@ -1,0 +1,52 @@
+
+
+
+
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Images</h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="modalRef.close()"
+  ></button>
+</div>
+
+
+
+
+
+<!-- <div class="wrapper">
+  <owl-carousel-o [options]="customOptions">
+
+    <ng-container *ngFor="let slide of imageList">
+      <ng-template class="slide" carouselSlide [id]="slide.id">
+        <img [src]="slide.url" [alt]="slide.id" [title]="slide.id">
+      </ng-template>
+    </ng-container>
+
+  </owl-carousel-o>  
+</div> -->
+
+ 
+
+
+
+<div>
+  <ng-container *ngFor="let image of imageList">
+    <div *ngIf="image" class="image-wrapper">
+      <a target="_blank"  class="gallery">
+        <img [src]="image"  />
+        <button class="delete-button btn btn-danger" (click)="deleteImage(image)">Delete Image</button>
+     
+      </a>
+    </div>
+  </ng-container>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Close
+  </button>
+
+</div>
