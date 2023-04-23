@@ -67,6 +67,12 @@ button {
   .image-placeholder {
     width: 150px; // Adjust the width and height of the image placeholder
     height: 150px;
-    background-color: #5caed4; // Adjust the background color of the image placeholder
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #ccc 75%),
+                      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px; // Adjust the size of the texture pattern
+    background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
     border-radius: 50%; // Make the image placeholder round
   }
+  
