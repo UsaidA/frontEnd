@@ -3,8 +3,7 @@ import axios from 'axios';
 import { Job, Jwmapping, Travels, Worker } from '../../classes';
 import { DataTablesModule } from 'angular-datatables';
 import { Router } from '@angular/router';
-import { allJobsKey, allWorkerKey, jwtTokenKey } from 'src/services/itemsKeys';
-import { sendJobData } from 'src/services/services';
+
 import { ManagerService } from '../shared/manager.service';
 import { AuthService } from '../shared/auth.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
