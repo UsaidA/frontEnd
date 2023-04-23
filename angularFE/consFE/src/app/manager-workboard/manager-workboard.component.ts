@@ -21,6 +21,11 @@ import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal
   styleUrls: ['./manager-workboard.component.scss'],
 })
 export class ManagerWorkboardComponent implements OnInit {
+  opened = true;
+
+  toggleSidebar() {
+    this.opened = !this.opened;
+  }
   dtTrigger: Subject<any> = new Subject();
   modalRef: MdbModalRef<CreateJobModalComponent> | null = null;
   firstName = '';
@@ -56,6 +61,7 @@ export class ManagerWorkboardComponent implements OnInit {
       processing: true,
     };
   }
+
 
   getJobData() {
     this.managerService.getJobs().subscribe((jobs: any) => {
@@ -114,7 +120,7 @@ export class ManagerWorkboardComponent implements OnInit {
     });
   }
 
-  openModal() {
+  openJobCreationModal() {
     this.modalRef = this.modalService.open(CreateJobModalComponent, {
       data: { title: 'Job Details' },
     });
@@ -124,6 +130,29 @@ export class ManagerWorkboardComponent implements OnInit {
         var x: Job = JSON.parse(message);
         this.managerService
           .postJob(x.name, x.description, x.completed, x.address)
+          .subscribe((res: any) => {
+            this.getJobData();
+          });
+      } else {
+      }
+    });
+  }
+  openJobUpdateModal(job: Job) {
+
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+        job: job,
+        openType: "update"
+      },
+    };
+    this.modalRef = this.modalService.open(CreateJobModalComponent,modalOptions);
+
+    this.modalRef.onClose.subscribe((message: any) => {
+      if (message) {
+        var x: Job = JSON.parse(message);
+        this.managerService
+          .updateJob(x.jobID, x.name, x.description, x.completed, x.address)
           .subscribe((res: any) => {
             this.getJobData();
           });
@@ -148,8 +177,36 @@ export class ManagerWorkboardComponent implements OnInit {
       }
     });
   }
+  openWorkerUpdateModal(worker:Worker) {
+   console.log("this isn't a test")
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+        worker: worker,
+        openType: "update"
+      },
+    };
+    this.modalRef = this.modalService.open(CreateWorkerModalComponent, modalOptions);
+
+    this.modalRef.onClose.subscribe((worker: any) => {
+      if (worker) {
+        var x: Worker = JSON.parse(worker);
+
+        this.managerService
+          .updateWorker(x.workerID, x.firstName, x.lastName, x.address, x.email) 
+          .subscribe((res: any) => {
+
+            this.getWorkerData();
+          });
+      } else {
+      }
+    });
+  }
+ 
+ 
 
   openWorkersTravelHistoryModal(workerID:string) {
+  
     this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
       if (res[0]){ //if res isn't undefined
         console.log(res)

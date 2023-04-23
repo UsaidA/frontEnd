@@ -66,6 +66,7 @@ export class AuthService {
       }
     });
   }
+
   get isWorkerLoggedIn(): boolean {
     let authToken = localStorage.getItem(jwtTokenKey);
 

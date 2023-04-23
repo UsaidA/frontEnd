@@ -15,6 +15,11 @@ import { CommonService } from '../shared/common.service';
   styleUrls: ['./worker-workboard.component.scss'],
 })
 export class WorkerWorkboardComponent {
+  opened = true;
+
+  toggleSidebar() {
+    this.opened = !this.opened;
+  }
   dtTrigger: Subject<any> = new Subject();
   modalRef: MdbModalRef<viewJobImagesModalComponent> | null = null;
   today: string = new Date().toISOString().slice(0, 10);
@@ -49,7 +54,7 @@ export class WorkerWorkboardComponent {
       autoWidth: false
     };
   }
-
+  
   dtOptions: DataTables.Settings = {};
   dtElement: any;
 

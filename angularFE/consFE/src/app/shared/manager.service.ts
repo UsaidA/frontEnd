@@ -55,6 +55,22 @@ export class ManagerService {
     );
     return Observable;
   }
+
+  updateJob(
+    jobID: string,
+    name: string,
+    description: string,
+    completed: string,
+    address: string
+  ) {
+    console.log({jobID, name, description, completed, address });
+
+    const Observable = this.http.put<any>(
+      `${this.endpoint}/jobs/updateJob`,
+      {jobID, name, description, completed, address }
+    );
+    return Observable;
+  }
   deleteJob(jobID:string, name:string, description:string,completed:string, address:string ){
     console.log({ jobID, name,description,completed,address });
     let params = {
@@ -90,6 +106,14 @@ export class ManagerService {
     const Observable = this.http.post<any>(
       `${this.endpoint}/workers/createNewWorker`,
       { firstName, lastName, address, email }
+    );
+    return Observable;
+
+  }
+  updateWorker(workerID:string, firstName: string, lastName:string, address:string, email:string){
+    const Observable = this.http.put<any>(
+      `${this.endpoint}/workers/updateWorker`,
+      { workerID, firstName, lastName, address, email }
     );
     return Observable;
 
