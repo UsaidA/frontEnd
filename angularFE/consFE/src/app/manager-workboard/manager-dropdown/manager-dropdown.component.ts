@@ -15,6 +15,7 @@ export class ManagerDropdownComponent {
   @Output() openEditJobClicked = new EventEmitter<void>();
   @Output() openTravelModalClicked = new EventEmitter<void>();
   @Output() openEditWorkerClicked = new EventEmitter<void>();
+  @Output() openManagerReviewModal = new EventEmitter<void>();
   
   viewImageClick() {
     this.viewImageClicked.emit();
@@ -37,6 +38,10 @@ export class ManagerDropdownComponent {
 
   openEditWorkerClick(){
     this.openEditWorkerClicked.emit();
+  }
+
+  openManagerReviewModalClick(){
+    this.openManagerReviewModal.emit();
   }
 
 }

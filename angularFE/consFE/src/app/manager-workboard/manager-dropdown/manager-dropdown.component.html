@@ -10,6 +10,7 @@
 				<button *ngIf="isJob" (click)="viewImageClick()" ngbDropdownItem>View Images</button>
 				<button *ngIf="isJob" (click)="openAssignWorkerClick()" ngbDropdownItem>Assign Workers</button>
                 <button *ngIf="isJob" (click)="openEditJobClick()" ngbDropdownItem>Edit Job</button>
+				<button *ngIf="isJob" (click)="openManagerReviewModalClick()" ngbDropdownItem>Review Worker</button>
 
 
                 <button *ngIf="!isJob" (click)="openTravelHistoryModalClick()" ngbDropdownItem>See History</button>

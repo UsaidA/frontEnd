@@ -26,6 +26,8 @@ import { RegisterComponent } from './register/register.component';
 import { ManagerDropdownComponent } from './manager-workboard/manager-dropdown/manager-dropdown.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { ManagerReviewComponent } from './manager-review/manager-review.component';
+
 //import { WorkerDropdownComponent_1 as WorkerDropdownComponent } from "./worker-workboard/worker-dropdown/worker-dropdown.component";
 @NgModule({
     declarations: [
@@ -40,7 +42,8 @@ import { MatButtonModule } from '@angular/material/button';
         CreateJobModalComponent,
         TravelModalComponent,
         KmConversionPipe,
-        RegisterComponent
+        RegisterComponent,
+        ManagerReviewComponent
     ],
     providers: [
         {

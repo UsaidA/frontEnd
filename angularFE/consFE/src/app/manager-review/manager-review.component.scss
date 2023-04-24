@@ -1,0 +1,59 @@
+.rating-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .rating-label {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .star {
+    font-size: 36px;
+    color: #bbb;
+    transition: all .2s ease-in-out;
+  }
+  
+  .star:hover,
+  .star:hover ~ .star {
+    color: #f1c40f;
+    cursor: pointer;
+  }
+  
+  input[type="radio"] {
+    display: none;
+  }
+  
+  input[type="radio"]:checked + label {
+    color: #f1c40f;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f1c40f;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #e67e22;
+  }
+  
