@@ -29,21 +29,24 @@ class Manager{
 
 
 class Job{
-    constructor(public jobID: string, public name: string, public description: string, public completed: string, public address : string){
+    constructor(public jobID: string, public name: string, public description: string, public completed: string, public address : string, public job_typeID :string){
         this.jobID = jobID;
         this.name = name;
         this.description = description
         this.address = address;
         this.completed = completed;
+        this.job_typeID = job_typeID;
     }
 
 }
 
 class Jwmapping{
-    constructor(public jwmappingID:string, public workerID: string, public jobID: string ){
+    constructor(public jwmappingID:string, public workerID: string, public jobID: string, public job_typeID: string, public satisfaction:string ){
         this.jwmappingID = jwmappingID;
         this.workerID = workerID;
-        this.jobID = jobID
+        this.jobID = jobID;
+        this.job_typeID = job_typeID;
+        this.satisfaction = satisfaction
     }
 }
 class Travels{

@@ -45,13 +45,14 @@ export class ManagerService {
     name: string,
     description: string,
     completed: string,
-    address: string
+    address: string,
+    jobType:string
   ) {
-    console.log({ name, description, completed, address });
+    console.log({ name, description, completed, address, jobType });
 
     const Observable = this.http.post<any>(
       `${this.endpoint}/jobs/createNewJob`,
-      { name, description, completed, address }
+      { name, description, completed, address, jobType }
     );
     return Observable;
   }
@@ -61,13 +62,14 @@ export class ManagerService {
     name: string,
     description: string,
     completed: string,
-    address: string
+    address: string,
+    job_typeID:string
   ) {
-    console.log({jobID, name, description, completed, address });
+    console.log({jobID, name, description, completed, address, job_typeID});
 
     const Observable = this.http.put<any>(
       `${this.endpoint}/jobs/updateJob`,
-      {jobID, name, description, completed, address }
+      {jobID, name, description, completed, address , job_typeID}
     );
     return Observable;
   }
@@ -119,12 +121,12 @@ export class ManagerService {
 
   }
 
-  postJwmapping(workerID: string, jobID: string) {
-    console.log({ workerID, jobID });
+  postJwmapping(workerID: string, jobID: string, job_typeID:any ){
+    console.log({ workerID, jobID , job_typeID});
 
     const Observable = this.http.post<any>(
       `${this.endpoint}/jwmapping/postAssign`,
-      { workerID, jobID }
+      { workerID, jobID, job_typeID }
     );
     return Observable;
   }
@@ -142,6 +144,20 @@ export class ManagerService {
     return Observable;
   }
 
+  getJobTypes(){
+
+    let api = `${this.endpoint}/jobTypes/getAllJobTypes`;
+  
+ 
+    return this.http.get(api).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+
+
+  }
   getWorkerTravelHistory(workerID:string){
 
     let api = `${this.endpoint}/travels/getWorkerTravelHistory`;
@@ -199,6 +215,16 @@ export class ManagerService {
 
   getWorkersFromJob(jobID: any) {
     let api = `${this.endpoint}/jwmapping/getAllWorkersFromJob`;
+    let params = { jobID: jobID };
+    return this.http.get(api, { params }).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
+  }
+  getWorkersNotFromJob(jobID: any) {
+    let api = `${this.endpoint}/jwmapping/getAllWorkersNotFromJob`;
     let params = { jobID: jobID };
     return this.http.get(api, { params }).pipe(
       map((res: any) => {

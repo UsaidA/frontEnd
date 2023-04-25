@@ -86,12 +86,12 @@ export class WorkerService {
     );
   }
 
-  postJobObj(jobID:string, name:string, description:string, completed:string, address:string) {
+  postJobObj(jobID:string, name:string, description:string, completed:string, address:string, job_typeID:string, workerID:string) {
     console.log({jobID, name, description, completed,address });
     console.log("test")
     const Observable = this.http.put<any>(
       `${this.endpoint}/jobs/updateJob`,
-      {jobID, name, description, completed,address }
+      {jobID, name, description, completed,address, job_typeID , workerID}
     );
     return Observable;
   }

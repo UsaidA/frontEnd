@@ -10,8 +10,9 @@ import { ShowErrorMessageService } from 'src/app/shared/show-error-message.servi
   styleUrls: ['./create-job-modal.component.scss'],
 })
 export class CreateJobModalComponent {
-  job: Job = new Job("","","","","");
+  job: Job = new Job("","","","","","");
   openType: any;
+  jobTypes:any;
 
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   constructor(
@@ -25,7 +26,7 @@ export class CreateJobModalComponent {
     this.modalRef.close(closeMessage);
   }
 
-  saveJob(jobName: any, jobDes: any, jobAddress: any): void {
+  saveJob(jobName: any, jobType:any, jobDes: any, jobAddress: any): void {
     const regex = new RegExp(
       '^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$'
     );
@@ -37,6 +38,7 @@ export class CreateJobModalComponent {
         .isValidPostcode(jobAddress.value)
         .subscribe((response: any) => {
           if (response.status === 'OK') {
+            console.log(jobType.value)
             
             if (this.openType === 'update') {
               console.log(jobDes.value)
@@ -45,7 +47,8 @@ export class CreateJobModalComponent {
                 jobName.value,
                 jobDes.value,
                 this.job.completed,
-                jobAddress.value
+                jobAddress.value,
+                jobType.value
               );
               const JSONOBJ = JSON.stringify(jobT);
               this.modalRef.close(JSONOBJ);
@@ -55,7 +58,8 @@ export class CreateJobModalComponent {
                 jobName.value,
                 jobDes.value,
                 '0',
-                jobAddress.value
+                jobAddress.value,
+                jobType.value
               );
               const JSONOBJ = JSON.stringify(jobT);
               this.modalRef.close(JSONOBJ);

@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 import { Job, Jwmapping, Travels, Worker } from '../../classes';
@@ -52,8 +54,7 @@ export class ManagerWorkboardComponent implements OnInit {
     window.scrollTo(0, 0);
     this.getJobData();
     this.getWorkerData();
-    //this.managerService.getDistance();
-    // add the worker and job services here
+   
 
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -62,7 +63,6 @@ export class ManagerWorkboardComponent implements OnInit {
       processing: true,
     };
   }
-
 
   getJobData() {
     this.managerService.getJobs().subscribe((jobs: any) => {
@@ -122,43 +122,73 @@ export class ManagerWorkboardComponent implements OnInit {
   }
 
   openJobCreationModal() {
-    this.modalRef = this.modalService.open(CreateJobModalComponent, {
-      data: { title: 'Job Details' },
-    });
+    this.managerService.getJobTypes().subscribe((types: any) => {
+      console.log(types);
 
-    this.modalRef.onClose.subscribe((message: any) => {
-      if (message) {
-        var x: Job = JSON.parse(message);
-        this.managerService
-          .postJob(x.name, x.description, x.completed, x.address)
-          .subscribe((res: any) => {
-            this.getJobData();
-          });
-      } else {
-      }
+      const modalOptions = {
+        modalClass: 'modal-dialog modal-xl',
+        data: {
+          jobTypes: types,
+        },
+      };
+
+      this.modalRef = this.modalService.open(
+        CreateJobModalComponent,
+        modalOptions
+      );
+
+      this.modalRef.onClose.subscribe((message: any) => {
+        if (message) {
+          var x: Job = JSON.parse(message);
+          this.managerService
+            .postJob(
+              x.name,
+              x.description,
+              x.completed,
+              x.address,
+              x.job_typeID
+            )
+            .subscribe((res: any) => {
+              this.getJobData();
+            });
+        } else {
+        }
+      });
     });
   }
   openJobUpdateModal(job: Job) {
+    this.managerService.getJobTypes().subscribe((types: any) => {
+      const modalOptions = {
+        modalClass: 'modal-dialog modal-xl',
+        data: {
+          job: job,
+          openType: 'update',
+          jobTypes: types,
+        },
+      };
+      this.modalRef = this.modalService.open(
+        CreateJobModalComponent,
+        modalOptions
+      );
 
-    const modalOptions = {
-      modalClass: 'modal-dialog modal-xl',
-      data: {
-        job: job,
-        openType: "update"
-      },
-    };
-    this.modalRef = this.modalService.open(CreateJobModalComponent,modalOptions);
-
-    this.modalRef.onClose.subscribe((message: any) => {
-      if (message) {
-        var x: Job = JSON.parse(message);
-        this.managerService
-          .updateJob(x.jobID, x.name, x.description, x.completed, x.address)
-          .subscribe((res: any) => {
-            this.getJobData();
-          });
-      } else {
-      }
+      this.modalRef.onClose.subscribe((message: any) => {
+        if (message) {
+          var x: Job = JSON.parse(message);
+          this.managerService
+            .updateJob(
+              x.jobID,
+              x.name,
+              x.description,
+              x.completed,
+              x.address,
+              x.job_typeID
+            )
+            .subscribe((res: any) => {
+              this.getJobData();
+            });
+        } else {
+        }
+      });
     });
   }
   openWorkerCreationModal() {
@@ -169,119 +199,149 @@ export class ManagerWorkboardComponent implements OnInit {
         var x: Worker = JSON.parse(worker);
 
         this.managerService
-          .postWorker(x.firstName, x.lastName, x.address, x.email) /// change to postWOrker 
+          .postWorker(x.firstName, x.lastName, x.address, x.email) /// change to postWOrker
           .subscribe((res: any) => {
-
             this.getWorkerData();
           });
       } else {
       }
     });
   }
-  openWorkerUpdateModal(worker:Worker) {
-   console.log("this isn't a test")
+  openWorkerUpdateModal(worker: Worker) {
+    console.log("this isn't a test");
     const modalOptions = {
       modalClass: 'modal-dialog modal-xl',
       data: {
         worker: worker,
-        openType: "update"
+        openType: 'update',
       },
     };
-    this.modalRef = this.modalService.open(CreateWorkerModalComponent, modalOptions);
+    this.modalRef = this.modalService.open(
+      CreateWorkerModalComponent,
+      modalOptions
+    );
 
     this.modalRef.onClose.subscribe((worker: any) => {
       if (worker) {
         var x: Worker = JSON.parse(worker);
 
         this.managerService
-          .updateWorker(x.workerID, x.firstName, x.lastName, x.address, x.email) 
+          .updateWorker(x.workerID, x.firstName, x.lastName, x.address, x.email)
           .subscribe((res: any) => {
-
             this.getWorkerData();
           });
       } else {
       }
     });
   }
- 
- 
 
-  openWorkersTravelHistoryModal(workerID:string) {
-  
-    this.managerService.getWorkerTravelHistory(workerID).subscribe((res:any)=>{
-      if (res[0]){ //if res isn't undefined
-        console.log(res)
-        const travels: Travels[] = res;
-      const modalOptions = {
-        modalClass: 'modal-dialog modal-xl',
-        data: {
-          allTravels: travels,
-          opener:1 // controlling the state of the  Modal - 0 would indicate no datatable
-        },
-      };
-      this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
-      }else{
-
-        const modalOptions = {
-          modalClass: 'modal-dialog modal-xl',
-          data: {
-            travelStatus: "No History",
-            opener: 0
-          },
-        };
-        this.modalRef = this.modalService.open(TravelModalComponent, modalOptions);
-      }
-    
-
-    })
-    
-
-  
+  openWorkersTravelHistoryModal(workerID: string) {
+    this.managerService
+      .getWorkerTravelHistory(workerID)
+      .subscribe((res: any) => {
+        if (res[0]) {
+          //if res isn't undefined
+          console.log(res);
+          const travels: Travels[] = res;
+          const modalOptions = {
+            modalClass: 'modal-dialog modal-xl',
+            data: {
+              allTravels: travels,
+              opener: 1, // controlling the state of the  Modal - 0 would indicate no datatable
+            },
+          };
+          this.modalRef = this.modalService.open(
+            TravelModalComponent,
+            modalOptions
+          );
+        } else {
+          const modalOptions = {
+            modalClass: 'modal-dialog modal-xl',
+            data: {
+              travelStatus: 'No History',
+              opener: 0,
+            },
+          };
+          this.modalRef = this.modalService.open(
+            TravelModalComponent,
+            modalOptions
+          );
+        }
+      });
   }
-
 
   openAssignModal(jobData: Job) {
     // the job parameter is passed upon modals creation in the datatable, the 'job' is passed in that moment
     this.getWorkerDataFromJob(jobData.jobID).subscribe(
       (workerIdList: string[]) => {
         // all workers that have already been assigned that job with the id jobData.jobID
-
+  
         let workersWithAssignedProperty = this.createWorkersWithAssignedProperty(workerIdList); //adds the 'assigned' property to the array of worker objects (are the workers assigned that specific job or not)
         this.getDistance( // array of distances in the same order as the workers array
           this.createArrayWorkerAddress(),
           jobData.address
         ).subscribe((distancesArr: string[]) => {
-          
+  
           console.log(distancesArr)
           let workerObjWithAssignedNDistanceProperties =
             this.addDistancesProperty(distancesArr, workersWithAssignedProperty);
+  
+          // Get worker manager satisfaction not assigned
+          this.getWorkerManagerSatisfactionNotAssigned(jobData.jobID).subscribe((workersWithPredictedSatisfactionNotAssigned: any) => {
+            workersWithPredictedSatisfactionNotAssigned.forEach((workerWithPredictedSatisfaction: { workerID: any; predictedSatisfaction: any; }) => {
+              const workerObj = workerObjWithAssignedNDistanceProperties.find(
+                (workerObj: { workerID: any; }) => workerObj.workerID === workerWithPredictedSatisfaction.workerID
+              );
+  
+              if (workerObj) {
+                workerObj.predictedSatisfaction = workerWithPredictedSatisfaction.predictedSatisfaction;
+              }
+            });
+  
+            // Get worker manager satisfaction assigned
+            this.getWorkerManagerSatisfactionAssigned(jobData.jobID).subscribe((workersWithPredictedSatisfactionAssigned: any) => {
+              workersWithPredictedSatisfactionAssigned.forEach((workerWithPredictedSatisfaction: { workerID: any; predictedSatisfaction: any; }) => {
+                const workerObj = workerObjWithAssignedNDistanceProperties.find(
+                  (workerObj: { workerID: any; }) => workerObj.workerID === workerWithPredictedSatisfaction.workerID
+                );
+  
+                if (workerObj) {
+                  workerObj.predictedSatisfaction = workerWithPredictedSatisfaction.predictedSatisfaction;
+                }
+              });
 
-            
-          const modalOptions = {
-            modalClass: 'modal-dialog modal-xl',
-            data: {
-              Job: jobData,
-              AllWorkers: workerObjWithAssignedNDistanceProperties,
-            },
-          };
-
-          this.modalRef = this.modalService.open(
-            AssignWorkersModalComponent,
-            modalOptions
-          );
-
-          this.modalRef.onClose.subscribe((message: any) => {
-            if (message) {
-              var x: Jwmapping = JSON.parse(message);
-
-              this.managerService.postJwmapping(x.workerID, x.jobID);
-            } else {
-            }
+              console.log(workerObjWithAssignedNDistanceProperties)
+  
+              const modalOptions = {
+                modalClass: 'modal-dialog modal-xl',
+                data: {
+                  Job: jobData,
+                  AllWorkers: workerObjWithAssignedNDistanceProperties,
+                },
+              };
+  
+              this.modalRef = this.modalService.open(
+                AssignWorkersModalComponent,
+                modalOptions
+              );
+  
+              this.modalRef.onClose.subscribe((message: any) => {
+                if (message) {
+                  var x: Jwmapping = JSON.parse(message);
+  
+                  //this.managerService.postJwmapping(x.workerID, x.jobID);
+                } else {
+                }
+              });
+            });
           });
         });
       }
     );
   }
+  
+               
+
   createArrayWorkerAddress() {
     let temp = new Array<string>(this.workerData.length);
 
@@ -313,44 +373,48 @@ export class ManagerWorkboardComponent implements OnInit {
   }
 
   getDistance(origin: string[], destination: string): Observable<any> {
-
-    
-    
     return this.managerService.getDistance(origin, destination).pipe(
       map((distances: any) => {
-        
         let distancesList = new Array<string>(this.workerData.length);
 
         for (let i = 0; i < this.workerData.length; i++) {
-          distancesList[i] = distances.rows[i].elements[0].distance.text;
+          distancesList[i] = distances.rows[i].elements[0].distance.value;
         }
         return distancesList;
       }),
       catchError((val) => of(`I caught: ${val}`))
     );
   }
-  confirmJobDelete(jobID:string, name:string, description:string,completed:string, address:string ){
-    if (confirm("Are you sure you want to delete permanently?")) {
+  confirmJobDelete(
+    jobID: string,
+    name: string,
+    description: string,
+    completed: string,
+    address: string
+  ) {
+    if (confirm('Are you sure you want to delete permanently?')) {
       // user clicked OK
-      console.log("User confirmed deletion");
-      this.managerService.deleteJob(jobID,name,description,completed,address).subscribe(()=>{
-        this.getJobData();
-      })
+      console.log('User confirmed deletion');
+      this.managerService
+        .deleteJob(jobID, name, description, completed, address)
+        .subscribe(() => {
+          this.getJobData();
+        });
     } else {
       // user clicked Cancel
-      console.log("User canceled deletion");
+      console.log('User canceled deletion');
     }
   }
-  confirmWorkerDelete(workerID: string){
-    if (confirm("Are you sure you want to delete permanently?")) {
+  confirmWorkerDelete(workerID: string) {
+    if (confirm('Are you sure you want to delete permanently?')) {
       // user clicked OK
-      console.log("User confirmed deletion");
-      this.managerService.deleteWorker(workerID).subscribe(()=>{
+      console.log('User confirmed deletion');
+      this.managerService.deleteWorker(workerID).subscribe(() => {
         this.getWorkerData();
-      })
+      });
     } else {
       // user clicked Cancel
-      console.log("User canceled deletion");
+      console.log('User canceled deletion');
     }
   }
 
@@ -363,6 +427,46 @@ export class ManagerWorkboardComponent implements OnInit {
         }
 
         return workersIdList;
+      }),
+      catchError((val) => of(`I caught: ${val}`))
+    );
+  }
+
+  getWorkerManagerSatisfactionAssigned(jobID: string): Observable<any> {
+    return this.managerService.getWorkersFromJob(jobID).pipe(
+      map((workers: any) => {
+        let workersList = new Array<{
+          workerID: string;
+          predictedSatisfaction: number;
+        }>(workers.length);
+        for (let i = 0; i < workers.length; i++) {
+          workersList[i] = {
+            workerID: workers[i].workerID,
+            predictedSatisfaction: workers[i].predictedSatisfaction,
+          };
+        }
+
+        return workersList;
+      }),
+      catchError((val) => of(`I caught: ${val}`))
+    );
+  }
+
+  getWorkerManagerSatisfactionNotAssigned(jobID: string): Observable<any> {
+    return this.managerService.getWorkersNotFromJob(jobID).pipe(
+      map((workers: any) => {
+        let workersList = new Array<{
+          workerID: string;
+          predictedSatisfaction: number;
+        }>(workers.length);
+        for (let i = 0; i < workers.length; i++) {
+          workersList[i] = {
+            workerID: workers[i].workerID,
+            predictedSatisfaction: workers[i].predictedSatisfaction,
+          };
+        }
+
+        return workersList;
       }),
       catchError((val) => of(`I caught: ${val}`))
     );

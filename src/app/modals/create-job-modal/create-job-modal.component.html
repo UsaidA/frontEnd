@@ -10,6 +10,13 @@
   <div class="form-outline form-white mb-4 form-group">
     <label class="form-label" for="typeEmailX">Job Name</label>
     <input type="email" id="jobName" class="form-control form-control-lg"  #jobName value = {{job.name}}/>
+    <label class="form-label" for="jobCategory">Job Type</label>
+    <select id="jobCategory" class="form-control form-control-lg" #jobCategory>
+      <option selected>Select a category</option>
+      <option *ngFor="let category of jobTypes" [value]="category.job_typeID">
+        {{ category.job_name }}
+      </option>
+    </select>
     <label class="form-label" for="typeEmailX">Job Description </label>
     <input type="email" id="description" class="form-control form-control-lg"  #jobDescription value = {{job.description}}/>
     <label class="form-label" for="typeEmailX">Job Post-Code</label>
@@ -21,5 +28,5 @@
     <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
       Close
     </button>
-    <button type="submit" class="btn btn-primary" (click)="saveJob(jobName,jobDescription,jobAddress)">Submit</button> 
+    <button type="submit" class="btn btn-primary" (click)="saveJob(jobName,jobCategory,jobDescription,jobAddress)">Submit</button> 
   </div>

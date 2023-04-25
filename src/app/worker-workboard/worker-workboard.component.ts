@@ -171,10 +171,11 @@ export class WorkerWorkboardComponent {
     name: any,
     description: any,
     completed: any,
-    address: any
+    address: any,
+    jobType:any
   ) {
 
-    console.log(jobID, name, description, completed, address);
+    console.log(jobID, name, description, completed, address, jobType);
 
     if (completed === 'true') {
       console.log('Job Complete');
@@ -182,11 +183,11 @@ export class WorkerWorkboardComponent {
     } else if (completed === 'false') {
       completed = 0;
     }
-    var job = new Job(jobID, name, description, completed, address);
+    var job = new Job(jobID, name, description, completed, address,jobType );
 
     console.log(job, ': job OBJ');
     
-    this.workerService.postJobObj(jobID, name, description,completed, address).subscribe();
+    this.workerService.postJobObj(jobID, name, description,completed, address, jobType, this.workerID).subscribe();
   }
 
   ngOndestroy() {
