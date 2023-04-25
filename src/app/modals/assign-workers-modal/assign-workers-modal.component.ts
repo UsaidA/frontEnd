@@ -46,25 +46,30 @@ export class AssignWorkersModalComponent implements OnInit {
     console.log(this.highestPred, "this is a tst of tets")
     console.log(this.AllWorkers)
   }
-  scaleManagerRating(managerRating: number, distance: number): number {
-    if (distance > 10000) {
-      return 0;
-    }
-
-    const k = 2000; // midpoint of the sigmoid function
-    const s = 500; // steepness of the sigmoid function
-    const scale = 1 / (1 + Math.exp(-(distance - k) / s)); // calculate the scale factor using the sigmoid function
-    return managerRating * scale; // scale down the manager rating
+  scaleManagerRating(managerRating: number, scalingFactor: number): number {
+    return managerRating * scalingFactor;
   }
 
   updatePredictedSatisfaction(allWorkers: any[]): void {
+    const minDistance = allWorkers.reduce((min, worker) => Math.min(min, worker.distance), Infinity);
+    const penaltyThreshold = 2000;
+
     allWorkers.forEach((worker) => {
-    
       const distance = worker.distance;
       const predictedSatisfaction = worker.predictedSatisfaction;
-      worker.predictedSatisfaction = this.scaleManagerRating(predictedSatisfaction, distance);
+      const distanceDifference = distance - minDistance;
+      let scalingFactor = 1;
+
+      if (distanceDifference > 0 && distanceDifference <= penaltyThreshold) {
+        scalingFactor = 1 - distanceDifference / penaltyThreshold;
+      } else if (distanceDifference > penaltyThreshold) {
+        scalingFactor = 0;
+      }
+
+      worker.predictedSatisfaction = this.scaleManagerRating(predictedSatisfaction, scalingFactor);
     });
   }
+
 
 
 
