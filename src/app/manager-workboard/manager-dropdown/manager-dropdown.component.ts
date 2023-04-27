@@ -44,6 +44,8 @@ export class ManagerDropdownComponent {
     this.openManagerReviewModal.emit();
   }
 
+  
+
 }
 
 

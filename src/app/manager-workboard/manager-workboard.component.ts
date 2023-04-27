@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import axios from 'axios';
 import { Job, Jwmapping, Travels, Worker } from '../../classes';
 import { DataTablesModule } from 'angular-datatables';
@@ -17,6 +17,7 @@ import { CreateWorkerModalComponent } from '../modals/create-worker-modal/create
 import { TravelModalComponent } from '../modals/travel-modal/travel-modal.component';
 import { CommonService } from '../shared/common.service';
 import { viewJobImagesModalComponent } from '../modals/images-modal/images-modal.component';
+import { ManagerReviewModalComponent } from '../modals/manager-review-modal/manager-review-modal.component';
 
 @Component({
   selector: 'app-manager-workboard',
@@ -37,7 +38,7 @@ export class ManagerWorkboardComponent implements OnInit {
 
   temp = '';
 
-  public jData: Job[] = [];
+   public jData: Job[] = [];
   public workerData: Worker[] = [];
 
   dtOptions: DataTables.Settings = {};
@@ -47,13 +48,16 @@ export class ManagerWorkboardComponent implements OnInit {
     private managerService: ManagerService,
     private commonService: CommonService,
     private authService: AuthService,
-    private modalService: MdbModalService
+    private modalService: MdbModalService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    console.log("Hi")
     window.scrollTo(0, 0);
     this.getJobData();
     this.getWorkerData();
+    this.getManagerDetails();
    
 
     this.dtOptions = {
@@ -63,12 +67,23 @@ export class ManagerWorkboardComponent implements OnInit {
       processing: true,
     };
   }
+  getManagerDetails() {
+    this.managerService.getManagerDetails().subscribe((worker: any) => {
+  
+     console.log("firstname sadfaosdhfaoifh" ,this.firstName)
+      this.firstName = worker.firstName;
+      this.lastName = worker.lastName;
+      this.email = worker.email;
+     
+    });
+  }
 
   getJobData() {
     this.managerService.getJobs().subscribe((jobs: any) => {
-      //use method when promise resolved
+     console.log("this should come last because it is")
       this.jData = jobs ?? [];
       //this.rerender();
+      this.cdr.detectChanges();
     });
   }
 
@@ -120,6 +135,20 @@ export class ManagerWorkboardComponent implements OnInit {
       );
     });
   }
+  openManagerReviewModal(){
+
+    const modalOptions = {
+      modalClass: 'modal-dialog modal-xl',
+      data: {
+      },
+    };
+
+    this.modalRef = this.modalService.open(
+      ManagerReviewModalComponent,
+      modalOptions
+    );
+
+  }
 
   openJobCreationModal() {
     this.managerService.getJobTypes().subscribe((types: any) => {
@@ -149,7 +178,11 @@ export class ManagerWorkboardComponent implements OnInit {
               x.job_typeID
             )
             .subscribe((res: any) => {
+              console.log("hello , this should be here")
+
+
               this.getJobData();
+              this.cdr.detectChanges();
             });
         } else {
         }
@@ -184,7 +217,9 @@ export class ManagerWorkboardComponent implements OnInit {
               x.job_typeID
             )
             .subscribe((res: any) => {
+              console.log("hosidfhasodihf")
               this.getJobData();
+              this.cdr.detectChanges
             });
         } else {
         }

@@ -30,7 +30,6 @@ export class ManagerService {
       catchError(this.handleError)
     );
   }
-
   getWorkers() {
     let api = `${this.endpoint}/workers/getAll`;
     return this.http.get(api).pipe(
@@ -40,7 +39,6 @@ export class ManagerService {
       catchError(this.handleError)
     );
   }
-
   postJob(
     name: string,
     description: string,
@@ -56,7 +54,6 @@ export class ManagerService {
     );
     return Observable;
   }
-
   updateJob(
     jobID: string,
     name: string,
@@ -89,7 +86,6 @@ export class ManagerService {
     return Observable;
 
   }
-
   deleteWorker(workerID:string){
     console.log({ workerID});
     let params = {
@@ -102,8 +98,6 @@ export class ManagerService {
     return Observable;
 
   }
-
-
   postWorker(firstName: string, lastName:string, address:string, email:string){
     const Observable = this.http.post<any>(
       `${this.endpoint}/workers/createNewWorker`,
@@ -244,5 +238,15 @@ export class ManagerService {
       msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(() => msg);
+  }
+
+  getManagerDetails() {
+    let api = `${this.endpoint}/manager/getManagerDetails`;
+    return this.http.get(api).pipe(
+      map((res: any) => {
+        return res || null;
+      }),
+      catchError(this.handleError)
+    );
   }
 }

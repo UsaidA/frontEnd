@@ -27,6 +27,8 @@ import { ManagerDropdownComponent } from './manager-workboard/manager-dropdown/m
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { ManagerReviewComponent } from './manager-review/manager-review.component';
+import { BinaryPipe } from './shared/binary.pipe';
+import { ManagerReviewModalComponent } from './modals/manager-review-modal/manager-review-modal.component';
 
 //import { WorkerDropdownComponent_1 as WorkerDropdownComponent } from "./worker-workboard/worker-dropdown/worker-dropdown.component";
 @NgModule({
@@ -43,7 +45,9 @@ import { ManagerReviewComponent } from './manager-review/manager-review.componen
         TravelModalComponent,
         KmConversionPipe,
         RegisterComponent,
-        ManagerReviewComponent
+        ManagerReviewComponent,
+        BinaryPipe,
+        ManagerReviewModalComponent
     ],
     providers: [
         {

@@ -5,9 +5,9 @@
         <div class="sidebar">
             <div class="image-placeholder"></div>
           </div>
-        <label class="small mb-1" for="inputFirstName">First name: {{firstName}}</label>
-        <label class="small mb-1" for="inputLastName">Last name: {{lastName}}</label>
-        <label class="small mb-1" for="inputEmailAddress">Email: {{email}}</label>
+          <label class="small mb-1 p-1" for="inputFirstName">First name: {{firstName}}</label>
+          <label class="small mb-1 p-1" for="inputLastName">Last name: {{lastName}}</label>
+          <label class="small mb-1 p-1" for="inputEmailAddress">Email: {{email}}</label>
         <br>
         <button class="btn btn-primary" style="color: rgb(255, 255, 255); background-color: rgb(18, 19, 43); border-radius: 4px; font-weight: 700;" type="button" (click) = "LogOut()">Log Out</button>
       </ul>
@@ -26,6 +26,7 @@
                     <tr>
                         <th>Job Name</th>
                         <th>Job Description</th>
+                        <th>Job Completed</th>
                         <th>Job Options</th>
                         <th>Delete Job</th>
                         <!-- <th>edit</th> -->
@@ -37,7 +38,8 @@
                     <tr *ngFor = "let job of jData">
                         <td> {{job.name}}</td>
                         <td> {{job.description}}</td>
-                        <td><app-manager-dropdown [isJob]="true" (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)"></app-manager-dropdown> </td>
+                        <td> {{job.completed | binaryPipe}}</td>
+                        <td><app-manager-dropdown [isJob]="true" (viewImageClicked)="openImagesModal(job)" (openAssignModalClicked)="openAssignModal(job)" (openEditJobClicked)="openJobUpdateModal(job)" (openManagerReviewModal)="openManagerReviewModal()"></app-manager-dropdown> </td>
                        
                         
                         <td><button class = "btn btn-danger" (click)="confirmJobDelete(job.jobID, job.name, job.description, job.completed, job.address)"></button></td>

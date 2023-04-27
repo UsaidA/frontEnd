@@ -10,9 +10,9 @@ import { ShowErrorMessageService } from 'src/app/shared/show-error-message.servi
   styleUrls: ['./create-job-modal.component.scss'],
 })
 export class CreateJobModalComponent {
-  job: Job = new Job("","","","","","");
+  job: Job = new Job('', '', '', '', '', '');
   openType: any;
-  jobTypes:any;
+  jobTypes: any;
 
   @ViewChild('errorMessage') errorMessageRef!: ElementRef;
   constructor(
@@ -25,8 +25,24 @@ export class CreateJobModalComponent {
     const closeMessage = 'Model closed';
     this.modalRef.close(closeMessage);
   }
+  convertNumber(string: any) {
+    if (string === 'Air conditioning') {
+      return "1";
+    } else if (string === 'Fire alarm') {
+      return "2";
+    } else if (string === 'Domestic') {
+      return "3";
+    } else if (string === 'Industrial') {
+      return "4";
+    } else if (string === 'Rewiring') {
+      return "5";
+    } else if (string === 'EV Plant') {
+      return "6";
+    }
+    return "1";
+  }
 
-  saveJob(jobName: any, jobType:any, jobDes: any, jobAddress: any): void {
+  saveJob(jobName: any, jobType: any, jobDes: any, jobAddress: any): void {
     const regex = new RegExp(
       '^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$'
     );
@@ -38,31 +54,42 @@ export class CreateJobModalComponent {
         .isValidPostcode(jobAddress.value)
         .subscribe((response: any) => {
           if (response.status === 'OK') {
-            console.log(jobType.value)
-            
+            console.log(jobType.value);
+
             if (this.openType === 'update') {
-              console.log(jobDes.value)
+             if(jobType.value !== "Select a category"){
+              
+            let  x = this.convertNumber(jobType.value)
               const jobT = new Job(
                 this.job.jobID,
                 jobName.value,
                 jobDes.value,
                 this.job.completed,
                 jobAddress.value,
-                jobType.value
+                x
               );
+          
               const JSONOBJ = JSON.stringify(jobT);
+              console.log(JSONOBJ)
               this.modalRef.close(JSONOBJ);
+             }else{
+              this.displayErrorMessage.showError(this.errorMessageRef);
+             }
+              
             } else {
-              const jobT = new Job(
-                '',
-                jobName.value,
-                jobDes.value,
-                '0',
-                jobAddress.value,
-                jobType.value
-              );
-              const JSONOBJ = JSON.stringify(jobT);
-              this.modalRef.close(JSONOBJ);
+              if(jobType.value !== "Select a category"){
+                const jobT = new Job(
+                  '',
+                  jobName.value,
+                  jobDes.value,
+                  '0',
+                  jobAddress.value,
+                  jobType.value
+                );
+                const JSONOBJ = JSON.stringify(jobT);
+                this.modalRef.close(JSONOBJ);
+               }
+             
             }
           } else {
             this.displayErrorMessage.showError(this.errorMessageRef);
